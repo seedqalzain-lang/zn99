@@ -75,7 +75,5 @@ export const getSiteContent = createServerFn({ method: "GET" }).handler(async ()
     .from("site_content")
     .select("key, value");
   if (error) throw new Error(error.message);
-  const out: Record<string, unknown> = {};
-  for (const r of data ?? []) out[r.key] = r.value;
-  return out;
+  return (data ?? []) as Array<{ key: string; value: unknown }>;
 });
