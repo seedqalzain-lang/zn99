@@ -70,10 +70,12 @@ export const getWallets = createServerFn({ method: "GET" }).handler(async () => 
   return data ?? [];
 });
 
+type Json = string | number | boolean | null | Json[] | { [k: string]: Json };
+
 export const getSiteContent = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await supabaseAdmin
     .from("site_content")
     .select("key, value");
   if (error) throw new Error(error.message);
-  return (data ?? []) as Array<{ key: string; value: unknown }>;
+  return (data ?? []) as Array<{ key: string; value: Json }>;
 });
