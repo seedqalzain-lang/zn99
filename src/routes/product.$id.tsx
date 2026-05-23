@@ -1,12 +1,13 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Star, ShoppingCart, MessageCircle, ArrowRight } from "lucide-react";
+import { Star, ShoppingCart, MessageCircle, ArrowRight, Check } from "lucide-react";
 import { Shell } from "@/components/layout/Shell";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { getProductById, getProducts } from "@/lib/catalog.functions";
 import { resolveImage } from "@/lib/asset-map";
 import { whatsappLink } from "@/lib/whatsapp";
+import { useCart } from "@/lib/cart";
 
 const productQO = (id: string) =>
   queryOptions({ queryKey: ["product", id], queryFn: () => getProductById({ data: { id } }) });
@@ -33,12 +34,21 @@ function ProductPage() {
   const { data: product } = useSuspenseQuery(productQO(id));
   const { data: products } = useSuspenseQuery(productsQO);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [added, setAdded] = useState(false);
+  const cart = useCart();
+  const navigate = useNavigate();
 
   if (!product) return null;
   const images = product.images.length > 0 ? product.images : ["placeholder"];
   const similar = products.filter((p) => p.id !== product.id && p.category_id === product.category_id).slice(0, 4);
 
   const waMsg = `مرحباً، أريد طلب المنتج: ${product.name} — السعر: ${product.price.toLocaleString()} ر.ي`;
+
+  const addToCart = () => {
+    cart.add({ id: product.id, name: product.name, price: Number(product.price), image: resolveImage(images[0]) });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
 
   return (
     <Shell>
@@ -89,8 +99,11 @@ function ProductPage() {
             <p className="text-[var(--color-ink-soft)] leading-relaxed mt-4">{product.description}</p>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              <button className="btn-gold">
-                <ShoppingCart className="w-4 h-4" /> أضف للسلة
+              <button onClick={addToCart} className="btn-gold">
+                {added ? <><Check className="w-4 h-4" /> تمت الإضافة</> : <><ShoppingCart className="w-4 h-4" /> أضف للسلة</>}
+              </button>
+              <button onClick={() => { addToCart(); navigate({ to: "/checkout" }); }} className="btn-outline">
+                اشترِ الآن
               </button>
               <a href={whatsappLink(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-outline">
                 <MessageCircle className="w-4 h-4 text-green-600" /> اطلب عبر واتساب
