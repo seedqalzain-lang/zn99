@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Search, Heart, User, ShoppingCart } from "lucide-react";
+import { useCart } from "@/lib/cart";
 
 export function Header() {
+  const { count } = useCart();
   return (
     <header className="sticky top-0 z-40 w-full bg-white border-b border-[var(--color-hairline)]">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
@@ -32,12 +34,12 @@ export function Header() {
           <Link to="/admin" className="p-2 rounded-full hover:bg-[var(--color-surface)]" aria-label="الحساب">
             <User className="w-5 h-5 text-[var(--color-gold)]" />
           </Link>
-          <button className="relative p-2 rounded-full hover:bg-[var(--color-surface)]" aria-label="السلة">
+          <Link to="/cart" className="relative p-2 rounded-full hover:bg-[var(--color-surface)]" aria-label="السلة">
             <ShoppingCart className="w-5 h-5 text-[var(--color-gold)]" />
-            <span className="absolute -top-1 -left-1 bg-[var(--color-gold)] text-[var(--color-ink)] text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-              0
+            <span className="absolute -top-1 -left-1 bg-[var(--color-gold)] text-[var(--color-ink)] text-[10px] font-bold rounded-full min-w-4 h-4 px-1 flex items-center justify-center">
+              {count}
             </span>
-          </button>
+          </Link>
         </div>
       </div>
 
