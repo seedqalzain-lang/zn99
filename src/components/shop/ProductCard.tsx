@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Star } from "lucide-react";
+import { Star, ShoppingCart, Check } from "lucide-react";
+import { useState } from "react";
 import { resolveImage } from "@/lib/asset-map";
+import { useCart } from "@/lib/cart";
 
 export interface ProductCardProduct {
   id: string;
@@ -13,8 +15,19 @@ export interface ProductCardProduct {
 
 export function ProductCard({ p }: { p: ProductCardProduct }) {
   const img = resolveImage(p.images?.[0]);
+  const cart = useCart();
+  const [added, setAdded] = useState(false);
+
+  const add = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    cart.add({ id: p.id, name: p.name, price: Number(p.price), image: img });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1200);
+  };
+
   return (
-    <Link to="/product/$id" params={{ id: p.id }} className="card-clean group flex flex-col">
+    <Link to="/product/$id" params={{ id: p.id }} className="card-clean group flex flex-col relative">
       <div className="aspect-square bg-[var(--color-surface)] overflow-hidden">
         <img
           src={img}
@@ -46,6 +59,12 @@ export function ProductCard({ p }: { p: ProductCardProduct }) {
             </span>
           )}
         </div>
+        <button
+          onClick={add}
+          className="mt-2 w-full bg-[var(--color-gold)] text-[var(--color-ink)] text-xs font-bold py-2 rounded-lg flex items-center justify-center gap-1 hover:opacity-90 transition"
+        >
+          {added ? <><Check className="w-3 h-3" /> تمت الإضافة</> : <><ShoppingCart className="w-3 h-3" /> أضف للسلة</>}
+        </button>
       </div>
     </Link>
   );
