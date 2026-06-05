@@ -8,9 +8,9 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 8; // 8 hours
 
 function getAdminPassword(): string {
-  // Server-only env var. Falls back to legacy value only if not set, but the
-  // user is asked to set ADMIN_PASSWORD as a secret in Lovable Cloud.
-  return process.env.ADMIN_PASSWORD || "zain20267731";
+  const pwd = process.env.ADMIN_PASSWORD;
+  if (!pwd) throw new Error("Server misconfigured: ADMIN_PASSWORD not set");
+  return pwd;
 }
 
 function getSessionSecret(): string {
