@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VipRouteImport } from './routes/vip'
+import { Route as TrackRouteImport } from './routes/track'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -26,6 +27,11 @@ import { Route as ProductIdRouteImport } from './routes/product.$id'
 const VipRoute = VipRouteImport.update({
   id: '/vip',
   path: '/vip',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrackRoute = TrackRouteImport.update({
+  id: '/track',
+  path: '/track',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRouteWithChildren
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/track': typeof TrackRoute
   '/vip': typeof VipRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRouteWithChildren
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/track': typeof TrackRoute
   '/vip': typeof VipRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRouteWithChildren
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/track': typeof TrackRoute
   '/vip': typeof VipRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/shop'
     | '/sitemap.xml'
+    | '/track'
     | '/vip'
     | '/product/$id'
     | '/services/$slug'
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/shop'
     | '/sitemap.xml'
+    | '/track'
     | '/vip'
     | '/product/$id'
     | '/services/$slug'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/shop'
     | '/sitemap.xml'
+    | '/track'
     | '/vip'
     | '/product/$id'
     | '/services/$slug'
@@ -194,6 +206,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRouteWithChildren
   ShopRoute: typeof ShopRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TrackRoute: typeof TrackRoute
   VipRoute: typeof VipRoute
   ProductIdRoute: typeof ProductIdRoute
 }
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       path: '/vip'
       fullPath: '/vip'
       preLoaderRoute: typeof VipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/track': {
+      id: '/track'
+      path: '/track'
+      fullPath: '/track'
+      preLoaderRoute: typeof TrackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -317,6 +337,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRouteWithChildren,
   ShopRoute: ShopRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TrackRoute: TrackRoute,
   VipRoute: VipRoute,
   ProductIdRoute: ProductIdRoute,
 }

@@ -8,6 +8,8 @@ import { getProductById, getProducts } from "@/lib/catalog.functions";
 import { resolveImage } from "@/lib/asset-map";
 import { whatsappLink } from "@/lib/whatsapp";
 import { useCart } from "@/lib/cart";
+import { ProductReviews } from "@/components/shop/ProductReviews";
+
 
 const productQO = (id: string) =>
   queryOptions({ queryKey: ["product", id], queryFn: () => getProductById({ data: { id } }) });
@@ -127,6 +129,8 @@ function ProductPage() {
           </div>
         </div>
 
+        <ProductReviews productId={product.id} />
+
         {similar.length > 0 && (
           <div className="mt-16">
             <h2 className="text-2xl font-black mb-6">منتجات مشابهة</h2>
@@ -137,6 +141,7 @@ function ProductPage() {
             </div>
           </div>
         )}
+
       </div>
     </Shell>
   );
