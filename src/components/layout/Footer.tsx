@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Phone, MessageCircle, MapPin, Clock, Mail } from "lucide-react";
+import { Phone, MessageCircle, MapPin, Clock, Mail, Facebook, Instagram } from "lucide-react";
+
 import { SALES_PHONE, WHATSAPP_NUMBER, DEV_PHONE, whatsappLink } from "@/lib/whatsapp";
 
 const wallets = [
