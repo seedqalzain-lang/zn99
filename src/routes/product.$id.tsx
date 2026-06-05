@@ -8,6 +8,8 @@ import { getProductById, getProducts } from "@/lib/catalog.functions";
 import { resolveImage } from "@/lib/asset-map";
 import { whatsappLink } from "@/lib/whatsapp";
 import { useCart } from "@/lib/cart";
+import { ProductReviews } from "@/components/shop/ProductReviews";
+
 
 const productQO = (id: string) =>
   queryOptions({ queryKey: ["product", id], queryFn: () => getProductById({ data: { id } }) });
