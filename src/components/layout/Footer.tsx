@@ -36,7 +36,29 @@ export function Footer() {
             <li><Link to="/vip" className="hover:text-[var(--color-gold)]">VIP</Link></li>
             <li><Link to="/about" className="hover:text-[var(--color-gold)]">من نحن</Link></li>
             <li><Link to="/contact" className="hover:text-[var(--color-gold)]">اتصل بنا</Link></li>
+            <li><Link to="/track" className="hover:text-[var(--color-gold)]">تتبع الطلب</Link></li>
           </ul>
+          <div className="flex items-center gap-3 mt-5">
+            <a
+              href="https://www.facebook.com/profile.php?id=61557758404308"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="فيسبوك"
+              className="w-9 h-9 rounded-full bg-[var(--color-surface)] border border-[var(--color-hairline)] flex items-center justify-center hover:bg-[var(--color-gold)] hover:text-white transition-colors"
+            >
+              <Facebook className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.instagram.com/my_car_decoration?igsh=MW9xbmpmNTJpNWV4ZA=="
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="إنستغرام"
+              className="w-9 h-9 rounded-full bg-[var(--color-surface)] border border-[var(--color-hairline)] flex items-center justify-center hover:bg-[var(--color-gold)] hover:text-white transition-colors"
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+          </div>
+
         </div>
 
         <div>
