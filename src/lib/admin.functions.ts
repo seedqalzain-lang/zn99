@@ -182,6 +182,57 @@ export const updateOrderStatus = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const deleteOrder = createServerFn({ method: "POST" })
+  .inputValidator((d) =>
+    z.object({ password: z.string(), id: z.string().uuid() }).parse(d),
+  )
+  .handler(async ({ data }) => {
+    assertAdmin(data.password);
+    const { data: row, error: selErr } = await supabaseAdmin
+      .from("orders").select("status").eq("id", data.id).maybeSingle();
+    if (selErr) { console.error("[server] DB error:", selErr); throw new Error("حدث خطأ"); }
+    if (!row) throw new Error("الطلب غير موجود");
+    if (row.status !== "delivered" && row.status !== "cancelled") {
+      throw new Error("يمكن حذف الطلبات المكتملة أو الملغية فقط");
+    }
+    const { error } = await supabaseAdmin.from("orders").delete().eq("id", data.id);
+    if (error) { console.error("[server] DB error:", error); throw new Error("حدث خطأ"); }
+    return { ok: true };
+  });
+
+/* ============ Reviews (admin) ============ */
+
+export const listAllReviews = createServerFn({ method: "POST" })
+  .inputValidator((d) =>
+    z.object({
+      password: z.string(),
+      maxRating: z.number().int().min(1).max(5).optional().nullable(),
+    }).parse(d),
+  )
+  .handler(async ({ data }) => {
+    assertAdmin(data.password);
+    let q = supabaseAdmin
+      .from("product_reviews")
+      .select("id, product_id, customer_name, rating, comment, created_at, products(name)")
+      .order("created_at", { ascending: false })
+      .limit(300);
+    if (data.maxRating) q = q.lte("rating", data.maxRating);
+    const { data: rows, error } = await q;
+    if (error) { console.error("[server] DB error:", error); throw new Error("حدث خطأ"); }
+    return rows ?? [];
+  });
+
+export const deleteReview = createServerFn({ method: "POST" })
+  .inputValidator((d) =>
+    z.object({ password: z.string(), id: z.string().uuid() }).parse(d),
+  )
+  .handler(async ({ data }) => {
+    assertAdmin(data.password);
+    const { error } = await supabaseAdmin.from("product_reviews").delete().eq("id", data.id);
+    if (error) { console.error("[server] DB error:", error); throw new Error("حدث خطأ"); }
+    return { ok: true };
+  });
+
 /* ============ Generic helpers ============ */
 
 const TABLES = ["products", "categories", "service_categories", "packages", "wallets", "site_content"] as const;
