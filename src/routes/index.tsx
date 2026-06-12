@@ -6,7 +6,8 @@ import {
 } from "lucide-react";
 import { Shell } from "@/components/layout/Shell";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { getCategories, getProducts, getPackages } from "@/lib/catalog.functions";
+import { FeaturedSlider } from "@/components/home/FeaturedSlider";
+import { getCategories, getProducts, getPackages, getFeaturedProducts } from "@/lib/catalog.functions";
 import { heroImage } from "@/lib/asset-map";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -16,6 +17,7 @@ const iconMap: Record<string, LucideIcon> = {
 const catsQO = queryOptions({ queryKey: ["categories"], queryFn: () => getCategories() });
 const productsQO = queryOptions({ queryKey: ["products"], queryFn: () => getProducts() });
 const packagesQO = queryOptions({ queryKey: ["packages"], queryFn: () => getPackages() });
+const featuredQO = queryOptions({ queryKey: ["featured-products"], queryFn: () => getFeaturedProducts() });
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -32,6 +34,7 @@ export const Route = createFileRoute("/")({
     context.queryClient.ensureQueryData(catsQO);
     context.queryClient.ensureQueryData(productsQO);
     context.queryClient.ensureQueryData(packagesQO);
+    context.queryClient.ensureQueryData(featuredQO);
   },
   component: HomePage,
 });
@@ -40,6 +43,7 @@ function HomePage() {
   const { data: categories } = useSuspenseQuery(catsQO);
   const { data: products } = useSuspenseQuery(productsQO);
   const { data: packages } = useSuspenseQuery(packagesQO);
+  const { data: featured } = useSuspenseQuery(featuredQO);
   const bestSellers = products.filter((p) => p.is_bestseller).slice(0, 4);
 
   return (
