@@ -79,6 +79,11 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="ar" dir="rtl">
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('mycar_theme');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}`,
+          }}
+        />
       </head>
       <body>
         {children}

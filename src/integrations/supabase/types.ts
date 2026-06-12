@@ -172,6 +172,7 @@ export type Database = {
           images: string[]
           in_stock: boolean
           is_bestseller: boolean
+          is_featured: boolean
           name: string
           old_price: number | null
           price: number
@@ -186,6 +187,7 @@ export type Database = {
           images?: string[]
           in_stock?: boolean
           is_bestseller?: boolean
+          is_featured?: boolean
           name: string
           old_price?: number | null
           price?: number
@@ -200,6 +202,7 @@ export type Database = {
           images?: string[]
           in_stock?: boolean
           is_bestseller?: boolean
+          is_featured?: boolean
           name?: string
           old_price?: number | null
           price?: number

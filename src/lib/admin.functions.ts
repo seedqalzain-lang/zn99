@@ -264,6 +264,7 @@ const productSchema = z.object({
   images: z.array(z.string()).max(10).default([]),
   category_id: z.string().uuid().optional().nullable(),
   is_bestseller: z.boolean().optional(),
+  is_featured: z.boolean().optional(),
   in_stock: z.boolean().optional(),
 });
 
