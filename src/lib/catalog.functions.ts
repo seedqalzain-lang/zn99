@@ -34,8 +34,19 @@ export const getServiceBySlug = createServerFn({ method: "GET" })
 export const getProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await supabaseAdmin
     .from("products")
-    .select("id, name, description, price, old_price, images, rating, is_bestseller, category_id")
+    .select("id, name, description, price, old_price, images, rating, is_bestseller, is_featured, category_id")
     .order("created_at", { ascending: false });
+  if (error) { console.error("[server] DB error:", error); throw new Error("حدث خطأ، الرجاء المحاولة لاحقاً"); }
+  return data ?? [];
+});
+
+export const getFeaturedProducts = createServerFn({ method: "GET" }).handler(async () => {
+  const { data, error } = await supabaseAdmin
+    .from("products")
+    .select("id, name, price, old_price, images, rating")
+    .eq("is_featured", true)
+    .order("created_at", { ascending: false })
+    .limit(20);
   if (error) { console.error("[server] DB error:", error); throw new Error("حدث خطأ، الرجاء المحاولة لاحقاً"); }
   return data ?? [];
 });
