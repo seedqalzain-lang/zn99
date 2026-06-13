@@ -68,6 +68,9 @@ function ServicesPage() {
             </Link>
           ))}
         </div>
+        {filtered.length === 0 && (
+          <p className="text-center text-[var(--color-ink-soft)] py-12">لا توجد نتائج مطابقة.</p>
+        )}
       </div>
     </Shell>
   );
