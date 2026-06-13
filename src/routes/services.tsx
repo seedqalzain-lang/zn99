@@ -24,14 +24,33 @@ export const Route = createFileRoute("/services")({
 
 function ServicesPage() {
   const { data: services } = useSuspenseQuery(servicesQO);
+  const [query, setQuery] = useState("");
+  const q = query.trim().toLowerCase();
+  const filtered = q
+    ? services.filter(
+        (s) =>
+          s.name.toLowerCase().includes(q) ||
+          (s.short_desc?.toLowerCase().includes(q) ?? false),
+      )
+    : services;
   return (
     <Shell>
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-3xl md:text-4xl font-black">خدماتنا الاحترافية</h1>
         <p className="text-[var(--color-ink-soft)] mt-2">11 خدمة متكاملة لراحتك — تنفذها أيدي خبراء.</p>
 
+        <div className="mt-6">
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="ابحث عن خدمة..."
+            className="w-full bg-white border-2 border-blue-200 focus:border-[var(--color-gold)] outline-none rounded-full py-2 px-4 text-sm"
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
-          {services.map((s) => (
+          {filtered.map((s) => (
             <Link
               key={s.id}
               to="/services/$slug"
