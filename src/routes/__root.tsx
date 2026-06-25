@@ -54,16 +54,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "تاج الملوك — مركز متكامل للعناية بالسيارات" },
-      { name: "description", content: "تاج الملوك -مركز و متجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، اكسسوارات، ومنتجات فاخرة." },
+      { title: "تاج الملوك — مركز متكامل للعناية بالسيارات الوكيل لمنتجات," },
+      { name: "description", content: "تاج الملوك -مركز و متجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، 
+اكسسوارات، ومنتجات فاخرة.
+شارع 22مايو امام فندق الاحلام قبل جولة الثقافة" },
       { name: "author", content: "تاج الملوك" },
-      { property: "og:title", content: "تاج الملوك — مركز متكامل للعناية بالسيارات" },
-      { property: "og:description", content: "تاج الملوك -مركز و متجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، اكسسوارات، ومنتجات فاخرة." },
+      { property: "og:title", content: "تاج الملوك — مركز متكامل للعناية بالسيارات الوكيل لمنتجات," },
+      { property: "og:description", content: "تاج الملوك -مركز و متجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، 
+اكسسوارات، ومنتجات فاخرة.
+شارع 22مايو امام فندق الاحلام قبل جولة الثقافة" },
       { property: "og:type", content: "website" },
-      { name: "twitter:title", content: "تاج الملوك — مركز متكامل للعناية بالسيارات" },
-      { name: "twitter:description", content: "تاج الملوك -مركز و متجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، اكسسوارات، ومنتجات فاخرة." },
-      { property: "og:image", content: "https://tajalmoluk.lovable.app/__l5e/assets-v1/f7f87699-eed0-4ee2-85e0-ac775ddf75d5/logo-tajalmoluk.png" },
-      { name: "twitter:image", content: "https://tajalmoluk.lovable.app/__l5e/assets-v1/f7f87699-eed0-4ee2-85e0-ac775ddf75d5/logo-tajalmoluk.png" },
+      { name: "twitter:title", content: "تاج الملوك — مركز متكامل للعناية بالسيارات الوكيل لمنتجات," },
+      { name: "twitter:description", content: "تاج الملوك -مركز و متجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، 
+اكسسوارات، ومنتجات فاخرة.
+شارع 22مايو امام فندق الاحلام قبل جولة الثقافة" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/2eW2DH2sX2McJ4cm1S2BVrVnpXx2/social-images/social-1782356151814-1782258695584.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/2eW2DH2sX2McJ4cm1S2BVrVnpXx2/social-images/social-1782356151814-1782258695584.webp" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
