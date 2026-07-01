@@ -564,6 +564,20 @@ export type Database = {
         }
         Returns: boolean
       }
+      verify_warranty_public: {
+        Args: { _num: string }
+        Returns: {
+          activation_date: string
+          branch_name: string
+          brand_name: string
+          customer_name: string
+          expiry_date: string
+          film_type_name: string
+          status: Database["public"]["Enums"]["warranty_status"]
+          vin: string
+          warranty_number: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "branch_staff" | "customer"
