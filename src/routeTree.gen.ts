@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WarrantyRouteImport } from './routes/warranty'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -21,9 +22,21 @@ import { Route as CartRouteImport } from './routes/cart'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WarrantyIndexRouteImport } from './routes/warranty.index'
+import { Route as WarrantyVerifyRouteImport } from './routes/warranty.verify'
+import { Route as WarrantyDashboardRouteImport } from './routes/warranty.dashboard'
+import { Route as WarrantyAuthRouteImport } from './routes/warranty.auth'
+import { Route as WarrantyAdminRouteImport } from './routes/warranty.admin'
+import { Route as WarrantyActivateRouteImport } from './routes/warranty.activate'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
+import { Route as WarrantyCertificateIdRouteImport } from './routes/warranty.certificate.$id'
 
+const WarrantyRoute = WarrantyRouteImport.update({
+  id: '/warranty',
+  path: '/warranty',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VipRoute = VipRouteImport.update({
   id: '/vip',
   path: '/vip',
@@ -84,6 +97,36 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WarrantyIndexRoute = WarrantyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WarrantyRoute,
+} as any)
+const WarrantyVerifyRoute = WarrantyVerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => WarrantyRoute,
+} as any)
+const WarrantyDashboardRoute = WarrantyDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => WarrantyRoute,
+} as any)
+const WarrantyAuthRoute = WarrantyAuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => WarrantyRoute,
+} as any)
+const WarrantyAdminRoute = WarrantyAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => WarrantyRoute,
+} as any)
+const WarrantyActivateRoute = WarrantyActivateRouteImport.update({
+  id: '/activate',
+  path: '/activate',
+  getParentRoute: () => WarrantyRoute,
+} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -93,6 +136,11 @@ const ProductIdRoute = ProductIdRouteImport.update({
   id: '/product/$id',
   path: '/product/$id',
   getParentRoute: () => rootRouteImport,
+} as any)
+const WarrantyCertificateIdRoute = WarrantyCertificateIdRouteImport.update({
+  id: '/certificate/$id',
+  path: '/certificate/$id',
+  getParentRoute: () => WarrantyRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -108,8 +156,16 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/track': typeof TrackRoute
   '/vip': typeof VipRoute
+  '/warranty': typeof WarrantyRouteWithChildren
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/warranty/activate': typeof WarrantyActivateRoute
+  '/warranty/admin': typeof WarrantyAdminRoute
+  '/warranty/auth': typeof WarrantyAuthRoute
+  '/warranty/dashboard': typeof WarrantyDashboardRoute
+  '/warranty/verify': typeof WarrantyVerifyRoute
+  '/warranty/': typeof WarrantyIndexRoute
+  '/warranty/certificate/$id': typeof WarrantyCertificateIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -126,6 +182,13 @@ export interface FileRoutesByTo {
   '/vip': typeof VipRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/warranty/activate': typeof WarrantyActivateRoute
+  '/warranty/admin': typeof WarrantyAdminRoute
+  '/warranty/auth': typeof WarrantyAuthRoute
+  '/warranty/dashboard': typeof WarrantyDashboardRoute
+  '/warranty/verify': typeof WarrantyVerifyRoute
+  '/warranty': typeof WarrantyIndexRoute
+  '/warranty/certificate/$id': typeof WarrantyCertificateIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -141,8 +204,16 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/track': typeof TrackRoute
   '/vip': typeof VipRoute
+  '/warranty': typeof WarrantyRouteWithChildren
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/warranty/activate': typeof WarrantyActivateRoute
+  '/warranty/admin': typeof WarrantyAdminRoute
+  '/warranty/auth': typeof WarrantyAuthRoute
+  '/warranty/dashboard': typeof WarrantyDashboardRoute
+  '/warranty/verify': typeof WarrantyVerifyRoute
+  '/warranty/': typeof WarrantyIndexRoute
+  '/warranty/certificate/$id': typeof WarrantyCertificateIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -159,8 +230,16 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/track'
     | '/vip'
+    | '/warranty'
     | '/product/$id'
     | '/services/$slug'
+    | '/warranty/activate'
+    | '/warranty/admin'
+    | '/warranty/auth'
+    | '/warranty/dashboard'
+    | '/warranty/verify'
+    | '/warranty/'
+    | '/warranty/certificate/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -177,6 +256,13 @@ export interface FileRouteTypes {
     | '/vip'
     | '/product/$id'
     | '/services/$slug'
+    | '/warranty/activate'
+    | '/warranty/admin'
+    | '/warranty/auth'
+    | '/warranty/dashboard'
+    | '/warranty/verify'
+    | '/warranty'
+    | '/warranty/certificate/$id'
   id:
     | '__root__'
     | '/'
@@ -191,8 +277,16 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/track'
     | '/vip'
+    | '/warranty'
     | '/product/$id'
     | '/services/$slug'
+    | '/warranty/activate'
+    | '/warranty/admin'
+    | '/warranty/auth'
+    | '/warranty/dashboard'
+    | '/warranty/verify'
+    | '/warranty/'
+    | '/warranty/certificate/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -208,11 +302,19 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TrackRoute: typeof TrackRoute
   VipRoute: typeof VipRoute
+  WarrantyRoute: typeof WarrantyRouteWithChildren
   ProductIdRoute: typeof ProductIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/warranty': {
+      id: '/warranty'
+      path: '/warranty'
+      fullPath: '/warranty'
+      preLoaderRoute: typeof WarrantyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vip': {
       id: '/vip'
       path: '/vip'
@@ -297,6 +399,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/warranty/': {
+      id: '/warranty/'
+      path: '/'
+      fullPath: '/warranty/'
+      preLoaderRoute: typeof WarrantyIndexRouteImport
+      parentRoute: typeof WarrantyRoute
+    }
+    '/warranty/verify': {
+      id: '/warranty/verify'
+      path: '/verify'
+      fullPath: '/warranty/verify'
+      preLoaderRoute: typeof WarrantyVerifyRouteImport
+      parentRoute: typeof WarrantyRoute
+    }
+    '/warranty/dashboard': {
+      id: '/warranty/dashboard'
+      path: '/dashboard'
+      fullPath: '/warranty/dashboard'
+      preLoaderRoute: typeof WarrantyDashboardRouteImport
+      parentRoute: typeof WarrantyRoute
+    }
+    '/warranty/auth': {
+      id: '/warranty/auth'
+      path: '/auth'
+      fullPath: '/warranty/auth'
+      preLoaderRoute: typeof WarrantyAuthRouteImport
+      parentRoute: typeof WarrantyRoute
+    }
+    '/warranty/admin': {
+      id: '/warranty/admin'
+      path: '/admin'
+      fullPath: '/warranty/admin'
+      preLoaderRoute: typeof WarrantyAdminRouteImport
+      parentRoute: typeof WarrantyRoute
+    }
+    '/warranty/activate': {
+      id: '/warranty/activate'
+      path: '/activate'
+      fullPath: '/warranty/activate'
+      preLoaderRoute: typeof WarrantyActivateRouteImport
+      parentRoute: typeof WarrantyRoute
+    }
     '/services/$slug': {
       id: '/services/$slug'
       path: '/$slug'
@@ -310,6 +454,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/product/$id'
       preLoaderRoute: typeof ProductIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/warranty/certificate/$id': {
+      id: '/warranty/certificate/$id'
+      path: '/certificate/$id'
+      fullPath: '/warranty/certificate/$id'
+      preLoaderRoute: typeof WarrantyCertificateIdRouteImport
+      parentRoute: typeof WarrantyRoute
     }
   }
 }
@@ -326,6 +477,30 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
   ServicesRouteChildren,
 )
 
+interface WarrantyRouteChildren {
+  WarrantyActivateRoute: typeof WarrantyActivateRoute
+  WarrantyAdminRoute: typeof WarrantyAdminRoute
+  WarrantyAuthRoute: typeof WarrantyAuthRoute
+  WarrantyDashboardRoute: typeof WarrantyDashboardRoute
+  WarrantyVerifyRoute: typeof WarrantyVerifyRoute
+  WarrantyIndexRoute: typeof WarrantyIndexRoute
+  WarrantyCertificateIdRoute: typeof WarrantyCertificateIdRoute
+}
+
+const WarrantyRouteChildren: WarrantyRouteChildren = {
+  WarrantyActivateRoute: WarrantyActivateRoute,
+  WarrantyAdminRoute: WarrantyAdminRoute,
+  WarrantyAuthRoute: WarrantyAuthRoute,
+  WarrantyDashboardRoute: WarrantyDashboardRoute,
+  WarrantyVerifyRoute: WarrantyVerifyRoute,
+  WarrantyIndexRoute: WarrantyIndexRoute,
+  WarrantyCertificateIdRoute: WarrantyCertificateIdRoute,
+}
+
+const WarrantyRouteWithChildren = WarrantyRoute._addFileChildren(
+  WarrantyRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -339,18 +514,9 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TrackRoute: TrackRoute,
   VipRoute: VipRoute,
+  WarrantyRoute: WarrantyRouteWithChildren,
   ProductIdRoute: ProductIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

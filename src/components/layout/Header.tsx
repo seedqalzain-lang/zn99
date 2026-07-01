@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Search, Heart, User, ShoppingCart } from "lucide-react";
+import { Search, Heart, User, ShoppingCart, ShieldCheck } from "lucide-react";
+
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
 import { ThemeToggle } from "./ThemeToggle";
@@ -40,7 +41,11 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-1 mr-auto md:mr-0">
+          <Link to="/warranty" className="hidden sm:inline-flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold bg-amber-500 text-white hover:bg-amber-600" aria-label="الضمانات">
+            <ShieldCheck className="w-4 h-4" /> <span className="hidden md:inline">الضمانات</span>
+          </Link>
           <ThemeToggle />
+
           <button className="p-2 rounded-full hover:bg-[var(--color-surface)]" aria-label="المفضلة">
             <Heart className="w-5 h-5 text-[var(--color-gold)]" />
           </button>

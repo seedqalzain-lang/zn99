@@ -55,19 +55,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "تاج الملوك — مركز متكامل للعناية بالسيارات الوكيل لمنتجات," },
-      { name: "description", content: "تاج الملوك -مركز و متجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، 
-اكسسوارات، ومنتجات فاخرة.
-شارع 22مايو امام فندق الاحلام قبل جولة الثقافة" },
+      { name: "description", content: "تاج الملوك - مركز ومتجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، اكسسوارات، ومنتجات فاخرة. شارع 22 مايو أمام فندق الأحلام قبل جولة الثقافة" },
       { name: "author", content: "تاج الملوك" },
-      { property: "og:title", content: "تاج الملوك — مركز متكامل للعناية بالسيارات الوكيل لمنتجات," },
-      { property: "og:description", content: "تاج الملوك -مركز و متجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، 
-اكسسوارات، ومنتجات فاخرة.
-شارع 22مايو امام فندق الاحلام قبل جولة الثقافة" },
+      { property: "og:title", content: "تاج الملوك — مركز متكامل للعناية بالسيارات" },
+      { property: "og:description", content: "تاج الملوك - مركز ومتجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، اكسسوارات، ومنتجات فاخرة." },
       { property: "og:type", content: "website" },
-      { name: "twitter:title", content: "تاج الملوك — مركز متكامل للعناية بالسيارات الوكيل لمنتجات," },
-      { name: "twitter:description", content: "تاج الملوك -مركز و متجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، 
-اكسسوارات، ومنتجات فاخرة.
-شارع 22مايو امام فندق الاحلام قبل جولة الثقافة" },
+      { name: "twitter:title", content: "تاج الملوك — مركز متكامل للعناية بالسيارات" },
+      { name: "twitter:description", content: "تاج الملوك - مركز ومتجر وخدمات متكاملة للعناية بالسيارات في صنعاء. PPF، نانو سيراميك، تنجيد، اكسسوارات، ومنتجات فاخرة." },
+
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/2eW2DH2sX2McJ4cm1S2BVrVnpXx2/social-images/social-1782356151814-1782258695584.webp" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/2eW2DH2sX2McJ4cm1S2BVrVnpXx2/social-images/social-1782356151814-1782258695584.webp" },
       { name: "twitter:card", content: "summary_large_image" },
