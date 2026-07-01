@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      branches: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          phone: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          phone?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          phone?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           created_at: string
@@ -40,6 +73,83 @@ export type Database = {
           sort_order?: number
         }
         Relationships: []
+      }
+      customers: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          phone: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          phone: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          phone?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      film_types: {
+        Row: {
+          brand_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          sort_order: number
+          updated_at: string
+          warranty_months: number
+        }
+        Insert: {
+          brand_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          sort_order?: number
+          updated_at?: string
+          warranty_months?: number
+        }
+        Update: {
+          brand_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          sort_order?: number
+          updated_at?: string
+          warranty_months?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "film_types_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "warranty_brands"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       orders: {
         Row: {
@@ -270,6 +380,38 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          branch_id: string | null
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          branch_id?: string | null
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          branch_id?: string | null
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wallets: {
         Row: {
           account_number: string
@@ -294,15 +436,138 @@ export type Database = {
         }
         Relationships: []
       }
+      warranties: {
+        Row: {
+          activation_date: string
+          branch_id: string | null
+          brand_id: string | null
+          created_at: string
+          customer_id: string
+          employee_id: string | null
+          expiry_date: string
+          film_type_id: string | null
+          id: string
+          notes: string | null
+          status: Database["public"]["Enums"]["warranty_status"]
+          updated_at: string
+          vin: string | null
+          warranty_number: string
+        }
+        Insert: {
+          activation_date?: string
+          branch_id?: string | null
+          brand_id?: string | null
+          created_at?: string
+          customer_id: string
+          employee_id?: string | null
+          expiry_date: string
+          film_type_id?: string | null
+          id?: string
+          notes?: string | null
+          status?: Database["public"]["Enums"]["warranty_status"]
+          updated_at?: string
+          vin?: string | null
+          warranty_number: string
+        }
+        Update: {
+          activation_date?: string
+          branch_id?: string | null
+          brand_id?: string | null
+          created_at?: string
+          customer_id?: string
+          employee_id?: string | null
+          expiry_date?: string
+          film_type_id?: string | null
+          id?: string
+          notes?: string | null
+          status?: Database["public"]["Enums"]["warranty_status"]
+          updated_at?: string
+          vin?: string | null
+          warranty_number?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warranties_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "warranties_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "warranty_brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "warranties_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "warranties_film_type_id_fkey"
+            columns: ["film_type_id"]
+            isOneToOne: false
+            referencedRelation: "film_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      warranty_brands: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      compute_expiry_date: {
+        Args: { _activation: string; _months: number }
+        Returns: string
+      }
+      generate_warranty_number: { Args: never; Returns: string }
+      get_user_branch: { Args: { _user_id: string }; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "branch_staff" | "customer"
+      warranty_status: "active" | "expired" | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -429,6 +694,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "branch_staff", "customer"],
+      warranty_status: ["active", "expired", "cancelled"],
+    },
   },
 } as const
