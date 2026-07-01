@@ -5,9 +5,9 @@ import { statusLabel, statusColor, formatDateAr, computeStatus, type WarrantySta
 import { Search, ShieldCheck, ShieldX, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/warranty/verify")({
-  validateSearch: (s: Record<string, unknown>) => ({ n: typeof s.n === "string" ? s.n : undefined }),
   component: VerifyPage,
 });
+
 
 type Result = {
   warranty_number: string;
@@ -22,8 +22,9 @@ type Result = {
 };
 
 function VerifyPage() {
-  const { n } = Route.useSearch();
-  const [num, setNum] = useState(n ?? "");
+  const initial = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("n") ?? "" : "";
+  const [num, setNum] = useState(initial);
+
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
@@ -36,9 +37,10 @@ function VerifyPage() {
     try {
       // Public verify: RLS on warranties requires auth; but we exposed a safe RPC path via a view? 
       // Instead, use edge-safe direct query filtered by warranty_number is blocked. Use RPC below.
-      const { data, error } = await supabase.rpc("verify_warranty_public", { _num: v });
+      const { data, error } = await supabase.rpc("verify_warranty_public" as never, { _num: v });
       if (error) throw error;
-      const row = (data as Result[] | null)?.[0];
+      const rows = (data as unknown as Result[] | null) ?? [];
+      const row = rows[0];
       if (!row) { setNotFound(true); return; }
       setResult({ ...row, status: computeStatus(row.expiry_date, row.status) });
     } catch (e) {
@@ -46,7 +48,8 @@ function VerifyPage() {
     } finally { setBusy(false); }
   }
 
-  useEffect(() => { if (n) doSearch(n); /* eslint-disable-next-line */ }, [n]);
+  useEffect(() => { if (initial) doSearch(initial); /* eslint-disable-next-line */ }, []);
+
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
