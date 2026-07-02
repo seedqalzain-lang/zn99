@@ -127,20 +127,28 @@ export const submitProductReview = createServerFn({ method: "POST" })
   });
 
 const phoneSchema = z.object({
-  phone: z.string().trim().min(6).max(30),
+  phone: z.string().trim().min(9).max(30),
+  orderId: z.string().trim().min(4).max(64),
 });
 
 export const getOrdersByPhone = createServerFn({ method: "POST" })
   .inputValidator((input) => phoneSchema.parse(input))
   .handler(async ({ data }) => {
+    // Require BOTH a full phone number AND an order ID prefix to prevent
+    // enumeration of other customers' orders via phone-only lookup.
     const normalized = data.phone.replace(/\D/g, "");
-    const last9 = normalized.slice(-9);
+    if (normalized.length < 9) return [];
+    const orderIdPrefix = data.orderId.trim().toLowerCase();
+    // Match orders whose id starts with the provided prefix AND whose phone
+    // contains the normalized number. Return only non-PII fields.
     const { data: rows, error } = await supabaseAdmin
       .from("orders")
-      .select("id, created_at, status, total, items, customer_name, phone, notes")
-      .ilike("phone", `%${last9}%`)
+      .select("id, created_at, status, total, items")
+      .ilike("id", `${orderIdPrefix}%`)
+      .ilike("phone", `%${normalized}%`)
       .order("created_at", { ascending: false })
-      .limit(50);
+      .limit(20);
     if (error) { console.error("[server] DB error:", error); throw new Error("حدث خطأ، الرجاء المحاولة لاحقاً"); }
     return rows ?? [];
   });
+
