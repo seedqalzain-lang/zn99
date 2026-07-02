@@ -84,6 +84,24 @@ function CertificatePage() {
 
   const s = computeStatus(data.expiry_date, data.status);
 
+  if (s === "pending") {
+    return (
+      <div className="max-w-lg mx-auto text-center bg-white dark:bg-slate-800 rounded-2xl border-2 border-amber-300 dark:border-amber-500/50 shadow-lg p-8 space-y-4">
+        <div className="w-16 h-16 mx-auto rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-amber-600 animate-spin" />
+        </div>
+        <h2 className="text-xl font-bold text-amber-700 dark:text-amber-400">بانتظار موافقة المسؤول</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300">
+          تم تسجيل الضمان رقم <span className="font-mono font-bold">{data.warranty_number}</span> بنجاح.
+          <br />ستُصدر الشهادة الرقمية فور مراجعة المسؤول واعتماد الضمان.
+        </p>
+        <Link to="/warranty/dashboard" className="inline-flex items-center gap-1 text-sm px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-600">
+          <ArrowRight className="w-4 h-4" /> العودة إلى لوحتي
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 print:hidden">
