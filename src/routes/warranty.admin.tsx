@@ -1,9 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useServerFn } from "@tanstack/react-start";
 import { useWarrantyAuth } from "@/lib/warranty-auth";
 import { formatDateAr, statusLabel, statusColor, computeStatus, type WarrantyStatus } from "@/lib/warranty-utils";
 import { Loader2, Users, ShieldCheck, Package, Layers, Search, Trash2, Ban, RefreshCw, Building2 } from "lucide-react";
+import {
+  adminListWarranties,
+  adminListCustomers,
+  adminOverviewStats,
+  adminListSimple,
+  adminMutate,
+} from "@/lib/warranty-admin.functions";
 
 export const Route = createFileRoute("/warranty/admin")({
   component: AdminPage,
@@ -56,21 +63,12 @@ function AdminPage() {
 
 /* ================= Overview ================= */
 function Overview() {
+  const call = useServerFn(adminOverviewStats);
   const [stats, setStats] = useState<{ customers: number; warranties: number; active: number; expired: number } | null>(null);
   const [latest, setLatest] = useState<Array<{ id: string; warranty_number: string; created_at: string; status: WarrantyStatus; expiry_date: string }>>([]);
   useEffect(() => {
-    (async () => {
-      const [c, w, wa, we, l] = await Promise.all([
-        supabase.from("customers").select("id", { count: "exact", head: true }),
-        supabase.from("warranties").select("id", { count: "exact", head: true }),
-        supabase.from("warranties").select("id", { count: "exact", head: true }).eq("status", "active").gte("expiry_date", new Date().toISOString().slice(0, 10)),
-        supabase.from("warranties").select("id", { count: "exact", head: true }).lt("expiry_date", new Date().toISOString().slice(0, 10)),
-        supabase.from("warranties").select("id, warranty_number, created_at, status, expiry_date").order("created_at", { ascending: false }).limit(10),
-      ]);
-      setStats({ customers: c.count ?? 0, warranties: w.count ?? 0, active: wa.count ?? 0, expired: we.count ?? 0 });
-      setLatest((l.data as never) ?? []);
-    })();
-  }, []);
+    call({ data: undefined as never }).then((r) => { setStats(r.stats); setLatest(r.latest as never); }).catch(() => setStats({ customers: 0, warranties: 0, active: 0, expired: 0 }));
+  }, [call]);
   if (!stats) return <Loader />;
   return (
     <div className="space-y-4">
@@ -122,6 +120,8 @@ type WarrantyRow = {
 };
 
 function WarrantiesTab() {
+  const listFn = useServerFn(adminListWarranties);
+  const mutFn = useServerFn(adminMutate);
   const [rows, setRows] = useState<WarrantyRow[]>([]);
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState<"all" | WarrantyStatus>("all");
@@ -129,15 +129,13 @@ function WarrantiesTab() {
 
   const load = async () => {
     setBusy(true);
-    const { data } = await supabase
-      .from("warranties")
-      .select("id, warranty_number, activation_date, expiry_date, status, vin, customers(full_name, phone), warranty_brands(name), film_types(name), branches(name)")
-      .order("created_at", { ascending: false })
-      .limit(200);
-    setRows((data as unknown as WarrantyRow[]) ?? []);
+    try {
+      const data = await listFn({ data: undefined as never });
+      setRows((data as unknown as WarrantyRow[]) ?? []);
+    } catch { setRows([]); }
     setBusy(false);
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -156,20 +154,20 @@ function WarrantiesTab() {
 
   async function cancel(id: string) {
     if (!confirm("إلغاء الضمان؟")) return;
-    await supabase.from("warranties").update({ status: "cancelled" }).eq("id", id);
-    load();
+    const err = await mutFn({ data: { op: "warranty_cancel", id } });
+    if (err) alert(err); else load();
   }
   async function extend(id: string, current: string) {
     const months = Number(prompt("عدد الأشهر للتمديد:", "12") ?? 0);
     if (!months || months < 1) return;
     const d = new Date(current); d.setMonth(d.getMonth() + months);
-    await supabase.from("warranties").update({ expiry_date: d.toISOString().slice(0, 10), status: "active" }).eq("id", id);
-    load();
+    const err = await mutFn({ data: { op: "warranty_extend", id, expiry_date: d.toISOString().slice(0, 10) } });
+    if (err) alert(err); else load();
   }
   async function remove(id: string) {
     if (!confirm("حذف الضمان نهائيًا؟")) return;
-    await supabase.from("warranties").delete().eq("id", id);
-    load();
+    const err = await mutFn({ data: { op: "warranty_delete", id } });
+    if (err) alert(err); else load();
   }
 
   return (
@@ -234,34 +232,38 @@ function WarrantiesTab() {
 /* ================= Customers Tab ================= */
 type CustomerRow = { id: string; full_name: string; phone: string; email: string | null; created_at: string };
 function CustomersTab() {
+  const listFn = useServerFn(adminListCustomers);
+  const mutFn = useServerFn(adminMutate);
   const [rows, setRows] = useState<CustomerRow[]>([]);
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState(false);
 
   const load = async () => {
     setBusy(true);
-    const { data } = await supabase.from("customers").select("id, full_name, phone, email, created_at").order("created_at", { ascending: false }).limit(300);
-    setRows((data as CustomerRow[]) ?? []);
+    try {
+      const data = await listFn({ data: undefined as never });
+      setRows((data as CustomerRow[]) ?? []);
+    } catch { setRows([]); }
     setBusy(false);
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
 
   async function addManual() {
     const name = prompt("اسم العميل:") ?? ""; if (!name.trim()) return;
     const phone = prompt("رقم الجوال:") ?? ""; if (!phone.trim()) return;
-    const { error } = await supabase.from("customers").insert({ full_name: name.trim(), phone: phone.trim() });
-    if (error) alert(error.message); else load();
+    const err = await mutFn({ data: { op: "customer_insert", full_name: name.trim(), phone: phone.trim() } });
+    if (err) alert(err); else load();
   }
   async function edit(r: CustomerRow) {
     const name = prompt("اسم العميل:", r.full_name) ?? r.full_name;
     const phone = prompt("رقم الجوال:", r.phone) ?? r.phone;
-    await supabase.from("customers").update({ full_name: name, phone }).eq("id", r.id);
-    load();
+    const err = await mutFn({ data: { op: "customer_update", id: r.id, full_name: name, phone } });
+    if (err) alert(err); else load();
   }
   async function remove(id: string) {
     if (!confirm("حذف العميل؟")) return;
-    const { error } = await supabase.from("customers").delete().eq("id", id);
-    if (error) alert(error.message); else load();
+    const err = await mutFn({ data: { op: "customer_delete", id } });
+    if (err) alert(err); else load();
   }
 
   const filtered = rows.filter((r) => {
@@ -308,16 +310,21 @@ function CustomersTab() {
 
 /* ================= Generic Simple CRUD ================= */
 type Field = { k: string; l: string; type?: "text" | "number" };
-function SimpleCrud({ table, title, fields }: { table: "warranty_brands" | "film_types" | "branches"; title: string; fields: Field[] }) {
+type SimpleTable = "warranty_brands" | "film_types" | "branches";
+function SimpleCrud({ table, title, fields }: { table: SimpleTable; title: string; fields: Field[] }) {
+  const listFn = useServerFn(adminListSimple);
+  const mutFn = useServerFn(adminMutate);
   const [rows, setRows] = useState<Array<Record<string, unknown> & { id: string; is_active?: boolean }>>([]);
   const [busy, setBusy] = useState(false);
   const load = async () => {
     setBusy(true);
-    const { data } = await supabase.from(table).select("*").order("sort_order");
-    setRows((data as never) ?? []);
+    try {
+      const data = await listFn({ data: { table } });
+      setRows((data as never) ?? []);
+    } catch { setRows([]); }
     setBusy(false);
   };
-  useEffect(() => { load(); }, [table]);
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [table]);
 
   async function addRow() {
     const rec: Record<string, unknown> = {};
@@ -327,8 +334,8 @@ function SimpleCrud({ table, title, fields }: { table: "warranty_brands" | "film
       rec[f.k] = f.type === "number" ? Number(v) : v;
     }
     if (!rec.name) return;
-    const { error } = await supabase.from(table).insert(rec as never);
-    if (error) alert(error.message); else load();
+    const err = await mutFn({ data: { op: "simple_insert", table, values: rec } });
+    if (err) alert(err); else load();
   }
   async function editRow(r: Record<string, unknown> & { id: string }) {
     const rec: Record<string, unknown> = {};
@@ -337,17 +344,17 @@ function SimpleCrud({ table, title, fields }: { table: "warranty_brands" | "film
       const v = prompt(f.l, cur) ?? cur;
       rec[f.k] = f.type === "number" ? Number(v) : v;
     }
-    await supabase.from(table).update(rec as never).eq("id", r.id);
-    load();
+    const err = await mutFn({ data: { op: "simple_update", table, id: r.id, values: rec } });
+    if (err) alert(err); else load();
   }
   async function toggle(r: { id: string; is_active?: boolean }) {
-    await supabase.from(table).update({ is_active: !r.is_active } as never).eq("id", r.id);
-    load();
+    const err = await mutFn({ data: { op: "simple_toggle", table, id: r.id, is_active: !r.is_active } });
+    if (err) alert(err); else load();
   }
   async function del(id: string) {
     if (!confirm("حذف؟")) return;
-    const { error } = await supabase.from(table).delete().eq("id", id);
-    if (error) alert(error.message); else load();
+    const err = await mutFn({ data: { op: "simple_delete", table, id } });
+    if (err) alert(err); else load();
   }
 
   return (
