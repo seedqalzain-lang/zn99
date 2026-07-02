@@ -30,17 +30,26 @@ function DashboardPage() {
   useEffect(() => {
     if (loading) return;
     if (!user) { navigate({ to: "/warranty/auth" }); return; }
+    let cancelled = false;
     (async () => {
-      const { data, error } = await supabase
-        .from("warranties")
-        .select("id, warranty_number, activation_date, expiry_date, status, vin, warranty_brands(name), film_types(name), branches(name)")
-        .order("created_at", { ascending: false });
-      if (error) setErr(error.message);
-      else setRows((data as unknown as Row[]) ?? []);
+      try {
+        const { data, error } = await supabase
+          .from("warranties")
+          .select("id, warranty_number, activation_date, expiry_date, status, vin, warranty_brands(name), film_types(name), branches(name)")
+          .order("created_at", { ascending: false });
+        if (cancelled) return;
+        if (error) { setErr(error.message); setRows([]); return; }
+        setRows((data as unknown as Row[]) ?? []);
+      } catch (e) {
+        if (cancelled) return;
+        setErr(e instanceof Error ? e.message : "تعذر تحميل الضمانات");
+        setRows([]);
+      }
     })();
+    return () => { cancelled = true; };
   }, [user, loading, navigate]);
 
-  if (loading || !rows) {
+  if (loading || (!rows && !err)) {
     return <div className="text-center py-16"><Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-500" /></div>;
   }
 
