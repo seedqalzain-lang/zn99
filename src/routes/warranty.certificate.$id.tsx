@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { QRCodeSVG } from "qrcode.react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { supabase } from "@/integrations/supabase/client";
 import { useWarrantyAuth } from "@/lib/warranty-auth";
+import { verifyWarranty } from "@/lib/warranty-public.functions";
 import { formatDateAr, statusLabel, statusColor, computeStatus, type WarrantyStatus, verifyUrl } from "@/lib/warranty-utils";
 import { Download, Printer, ArrowRight, Loader2 } from "lucide-react";
 import logoAsset from "@/assets/logo-tajalmoluk.png.asset.json";
@@ -14,22 +15,22 @@ export const Route = createFileRoute("/warranty/certificate/$id")({
 });
 
 type Data = {
-  id: string;
   warranty_number: string;
   activation_date: string;
   expiry_date: string;
   status: WarrantyStatus;
   vin: string | null;
-  customers: { full_name: string; phone: string } | null;
-  warranty_brands: { name: string } | null;
-  film_types: { name: string } | null;
-  branches: { name: string } | null;
+  customer_name: string | null;
+  brand_name: string | null;
+  film_type_name: string | null;
+  branch_name: string | null;
 };
 
 function CertificatePage() {
   const { id } = Route.useParams();
   const { user, loading } = useWarrantyAuth();
   const navigate = useNavigate();
+  const verify = useServerFn(verifyWarranty);
   const [data, setData] = useState<Data | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [downloading, setDownloading] = useState(false);
@@ -39,16 +40,26 @@ function CertificatePage() {
     if (loading) return;
     if (!user) { navigate({ to: "/warranty/auth" }); return; }
     (async () => {
-      const { data, error } = await supabase
-        .from("warranties")
-        .select("id, warranty_number, activation_date, expiry_date, status, vin, customers(full_name, phone), warranty_brands(name), film_types(name), branches(name)")
-        .eq("id", id)
-        .maybeSingle();
-      if (error) setErr(error.message);
-      else if (!data) setErr("لم يتم العثور على الضمان");
-      else setData(data as unknown as Data);
+      try {
+        const rows = await verify({ data: { num: id } });
+        const row = Array.isArray(rows) ? rows[0] : null;
+        if (!row) { setErr("لم يتم العثور على الضمان"); return; }
+        setData({
+          warranty_number: row.warranty_number,
+          activation_date: row.activation_date,
+          expiry_date: row.expiry_date,
+          status: row.status,
+          vin: row.vin,
+          customer_name: row.customer_name,
+          brand_name: row.brand_name,
+          film_type_name: row.film_type_name,
+          branch_name: row.branch_name,
+        });
+      } catch (e) {
+        setErr(e instanceof Error ? e.message : "تعذر تحميل الشهادة");
+      }
     })();
-  }, [id, user, loading, navigate]);
+  }, [id, user, loading, navigate, verify]);
 
   async function downloadPdf() {
     if (!certRef.current || !data) return;
@@ -104,12 +115,11 @@ function CertificatePage() {
 
         <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6" dir="rtl">
           <div className="md:col-span-2 space-y-3 text-sm">
-            <CertRow label="اسم العميل" value={data.customers?.full_name ?? "-"} />
-            <CertRow label="رقم الجوال" value={data.customers?.phone ?? "-"} />
-            <CertRow label="الماركة" value={data.warranty_brands?.name ?? "-"} />
-            <CertRow label="نوع اللاصق" value={data.film_types?.name ?? "-"} />
+            <CertRow label="اسم العميل" value={data.customer_name ?? "-"} />
+            <CertRow label="الماركة" value={data.brand_name ?? "-"} />
+            <CertRow label="نوع اللاصق" value={data.film_type_name ?? "-"} />
             <CertRow label="رقم الهيكل" value={data.vin ?? "-"} />
-            <CertRow label="الفرع" value={data.branches?.name ?? "-"} />
+            <CertRow label="الفرع" value={data.branch_name ?? "-"} />
             <CertRow label="تاريخ التفعيل" value={formatDateAr(data.activation_date)} />
             <CertRow label="تاريخ الانتهاء" value={formatDateAr(data.expiry_date)} highlight />
             <div>

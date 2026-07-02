@@ -81,7 +81,7 @@ function DashboardPage() {
                   <div><span className="text-slate-500">التفعيل:</span> {formatDateAr(r.activation_date)}</div>
                   <div><span className="text-slate-500">الانتهاء:</span> {formatDateAr(r.expiry_date)}</div>
                 </div>
-                <Link to="/warranty/certificate/$id" params={{ id: r.id }} className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 dark:bg-amber-500 text-white rounded-lg font-medium hover:opacity-90">
+                <Link to="/warranty/certificate/$id" params={{ id: r.warranty_number }} className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 dark:bg-amber-500 text-white rounded-lg font-medium hover:opacity-90">
                   <FileText className="w-4 h-4" /> شهادة الضمان
                 </Link>
               </div>
