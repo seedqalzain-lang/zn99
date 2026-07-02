@@ -36,23 +36,32 @@ const STATUS_COLOR: Record<string, string> = {
 
 function TrackPage() {
   const [phone, setPhone] = useState("");
+  const [orderId, setOrderId] = useState("");
   const mutation = useMutation({
-    mutationFn: (p: string) => getOrdersByPhone({ data: { phone: p } }),
+    mutationFn: (v: { phone: string; orderId: string }) => getOrdersByPhone({ data: v }),
   });
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (phone.trim().length < 6) return;
-    mutation.mutate(phone.trim());
+    if (phone.replace(/\D/g, "").length < 9) return;
+    if (orderId.trim().length < 4) return;
+    mutation.mutate({ phone: phone.trim(), orderId: orderId.trim() });
   };
 
   return (
     <Shell>
       <div className="max-w-3xl mx-auto px-4 py-8">
         <h1 className="text-2xl md:text-3xl font-black mb-2">تتبع الطلب</h1>
-        <p className="text-[var(--color-ink-soft)] mb-6">أدخل رقم الهاتف المستخدم في الطلب لعرض حالة طلباتك.</p>
+        <p className="text-[var(--color-ink-soft)] mb-6">أدخل رقم الطلب (أول 4 أحرف على الأقل) ورقم الهاتف المستخدم في الطلب.</p>
 
-        <form onSubmit={onSubmit} className="flex gap-2 mb-8">
+        <form onSubmit={onSubmit} className="flex flex-col sm:flex-row gap-2 mb-8">
+          <input
+            type="text"
+            value={orderId}
+            onChange={(e) => setOrderId(e.target.value)}
+            placeholder="رقم الطلب"
+            className="flex-1 border-2 border-blue-200 focus:border-[var(--color-gold)] outline-none rounded-full py-3 px-4 text-sm"
+          />
           <div className="relative flex-1">
             <Phone className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-ink-soft)]" />
             <input
@@ -69,6 +78,7 @@ function TrackPage() {
             <Search className="w-4 h-4" /> {mutation.isPending ? "جارٍ البحث..." : "بحث"}
           </button>
         </form>
+
 
         {mutation.isError && (
           <div className="rounded-xl bg-red-50 text-red-700 p-4 text-sm">حدث خطأ، الرجاء المحاولة لاحقاً</div>
