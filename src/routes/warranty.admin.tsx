@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useWarrantyAuth } from "@/lib/warranty-auth";
 import { formatDateAr, statusLabel, statusColor, computeStatus, type WarrantyStatus } from "@/lib/warranty-utils";
-import { Loader2, Users, ShieldCheck, Package, Layers, Search, Trash2, Ban, RefreshCw, Building2 } from "lucide-react";
+import { Loader2, Users, ShieldCheck, Package, Layers, Search, Trash2, Ban, RefreshCw, Building2, CheckCircle2 } from "lucide-react";
 import {
   adminListWarranties,
   adminListCustomers,
@@ -152,6 +152,11 @@ function WarrantiesTab() {
     });
   }, [rows, q, filter]);
 
+  async function approve(id: string) {
+    if (!confirm("الموافقة على الضمان وتفعيله؟")) return;
+    const err = await mutFn({ data: { op: "warranty_approve", id } });
+    if (err) alert(err); else load();
+  }
   async function cancel(id: string) {
     if (!confirm("إلغاء الضمان؟")) return;
     const err = await mutFn({ data: { op: "warranty_cancel", id } });
@@ -180,6 +185,7 @@ function WarrantiesTab() {
         </div>
         <select value={filter} onChange={(e) => setFilter(e.target.value as never)} className="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800">
           <option value="all">كل الحالات</option>
+          <option value="pending">بانتظار الموافقة</option>
           <option value="active">سارية</option>
           <option value="expired">منتهية</option>
           <option value="cancelled">ملغية</option>
@@ -213,6 +219,9 @@ function WarrantiesTab() {
                     <td className="p-2 text-xs">{formatDateAr(r.expiry_date)}</td>
                     <td className="p-2"><span className={`text-xs px-2 py-0.5 rounded-full border ${statusColor[s]}`}>{statusLabel[s]}</span></td>
                     <td className="p-2 whitespace-nowrap">
+                      {s === "pending" && (
+                        <button onClick={() => approve(r.id)} className="p-1 hover:bg-green-50 rounded" title="موافقة وتفعيل"><CheckCircle2 className="w-4 h-4 text-green-600" /></button>
+                      )}
                       <button onClick={() => extend(r.id, r.expiry_date)} className="p-1 hover:bg-slate-100 rounded" title="تمديد"><RefreshCw className="w-4 h-4 text-blue-600" /></button>
                       <button onClick={() => cancel(r.id)} className="p-1 hover:bg-slate-100 rounded" title="إلغاء"><Ban className="w-4 h-4 text-orange-600" /></button>
                       <button onClick={() => remove(r.id)} className="p-1 hover:bg-slate-100 rounded" title="حذف"><Trash2 className="w-4 h-4 text-red-600" /></button>
