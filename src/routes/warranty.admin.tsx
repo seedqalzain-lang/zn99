@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useWarrantyAuth } from "@/lib/warranty-auth";
 import { formatDateAr, statusLabel, statusColor, computeStatus, type WarrantyStatus } from "@/lib/warranty-utils";
-import { Loader2, Users, ShieldCheck, Package, Layers, Search, Trash2, Ban, RefreshCw, Building2 } from "lucide-react";
+import { Loader2, Users, ShieldCheck, Package, Layers, Search, Trash2, Ban, RefreshCw, Building2, CheckCircle2 } from "lucide-react";
 import {
   adminListWarranties,
   adminListCustomers,
