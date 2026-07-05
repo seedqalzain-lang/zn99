@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "tajalmlwk-mcp",
+      "version": "0.1.0",
+      "title": "Taj Al Mulook Warranty MCP"
+    },
+    "tools": [
+      {
+        "name": "verify_warranty",
+        "title": "Verify warranty",
+        "description": "Look up a Taj Al Mulook warranty by its warranty number (e.g. TM-YYYY-XXXXXX) and return public details: status, activation and expiry dates, vehicle brand, film type, and branch.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "warranty_number": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 64,
+              "description": "The warranty number printed on the certificate."
+            }
+          },
+          "required": [
+            "warranty_number"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
