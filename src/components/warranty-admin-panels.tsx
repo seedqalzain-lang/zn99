@@ -1,0 +1,369 @@
+import { useEffect, useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { formatDateAr, statusLabel, statusColor, computeStatus, type WarrantyStatus } from "@/lib/warranty-utils";
+import { Loader2, Search, Trash2, Ban, RefreshCw, CheckCircle2 } from "lucide-react";
+import {
+  adminListWarranties,
+  adminListCustomers,
+  adminOverviewStats,
+  adminListSimple,
+  adminMutate,
+} from "@/lib/warranty-admin.functions";
+
+function Loader() {
+  return <div className="text-center py-10"><Loader2 className="w-6 h-6 animate-spin mx-auto text-amber-500" /></div>;
+}
+
+/* ================= Overview ================= */
+export function WarrantyOverview() {
+  const call = useServerFn(adminOverviewStats);
+  const [stats, setStats] = useState<{ customers: number; warranties: number; active: number; expired: number } | null>(null);
+  const [latest, setLatest] = useState<Array<{ id: string; warranty_number: string; created_at: string; status: WarrantyStatus; expiry_date: string }>>([]);
+  const [err, setErr] = useState<string | null>(null);
+  useEffect(() => {
+    call({ data: undefined as never })
+      .then((r) => { setStats(r.stats); setLatest(r.latest as never); })
+      .catch((e) => { setErr(e instanceof Error ? e.message : "تعذر التحميل"); setStats({ customers: 0, warranties: 0, active: 0, expired: 0 }); });
+  }, [call]);
+  if (!stats) return <Loader />;
+  return (
+    <div className="space-y-4">
+      {err && <div className="p-3 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 text-sm">
+        يرجى تسجيل الدخول من <a href="/warranty/auth" className="underline font-bold">بوابة الضمانات</a> بحساب المسؤول لعرض بيانات الضمانات. ({err})
+      </div>}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <StatCard color="bg-blue-500" label="إجمالي العملاء" value={stats.customers} />
+        <StatCard color="bg-slate-700" label="إجمالي الضمانات" value={stats.warranties} />
+        <StatCard color="bg-green-500" label="ضمانات سارية" value={stats.active} />
+        <StatCard color="bg-gray-500" label="ضمانات منتهية" value={stats.expired} />
+      </div>
+      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
+        <h3 className="font-bold mb-3">أحدث الضمانات</h3>
+        <div className="space-y-2 text-sm">
+          {latest.map((r) => {
+            const s = computeStatus(r.expiry_date, r.status);
+            return (
+              <div key={r.id} className="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-700 last:border-0">
+                <span className="font-mono">{r.warranty_number}</span>
+                <span className="text-slate-500 text-xs">{formatDateAr(r.created_at)}</span>
+                <span className={`px-2 py-0.5 rounded-full text-xs border ${statusColor[s]}`}>{statusLabel[s]}</span>
+              </div>
+            );
+          })}
+          {latest.length === 0 && <div className="text-center text-slate-500 py-4">لا توجد بيانات</div>}
+        </div>
+      </div>
+    </div>
+  );
+}
+function StatCard({ color, label, value }: { color: string; label: string; value: number }) {
+  return (
+    <div className={`${color} text-white rounded-2xl p-4 shadow`}>
+      <div className="text-xs opacity-90">{label}</div>
+      <div className="text-3xl font-black mt-1">{value}</div>
+    </div>
+  );
+}
+
+/* ================= Warranties Tab ================= */
+type WarrantyRow = {
+  id: string;
+  warranty_number: string;
+  activation_date: string;
+  expiry_date: string;
+  status: WarrantyStatus;
+  vin: string | null;
+  customers: { full_name: string; phone: string } | null;
+  warranty_brands: { name: string } | null;
+  film_types: { name: string } | null;
+  branches: { name: string } | null;
+};
+
+export function WarrantiesTab() {
+  const listFn = useServerFn(adminListWarranties);
+  const mutFn = useServerFn(adminMutate);
+  const [rows, setRows] = useState<WarrantyRow[]>([]);
+  const [q, setQ] = useState("");
+  const [filter, setFilter] = useState<"all" | WarrantyStatus>("all");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  const load = async () => {
+    setBusy(true); setErr(null);
+    try {
+      const data = await listFn({ data: undefined as never });
+      setRows((data as unknown as WarrantyRow[]) ?? []);
+    } catch (e) { setErr(e instanceof Error ? e.message : "تعذر التحميل"); setRows([]); }
+    setBusy(false);
+  };
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+
+  const filtered = useMemo(() => {
+    const query = q.trim().toLowerCase();
+    return rows.filter((r) => {
+      const s = computeStatus(r.expiry_date, r.status);
+      if (filter !== "all" && s !== filter) return false;
+      if (!query) return true;
+      return (
+        r.warranty_number.toLowerCase().includes(query) ||
+        (r.customers?.full_name ?? "").toLowerCase().includes(query) ||
+        (r.customers?.phone ?? "").includes(query) ||
+        (r.vin ?? "").toLowerCase().includes(query)
+      );
+    });
+  }, [rows, q, filter]);
+
+  async function approve(id: string) {
+    if (!confirm("الموافقة على الضمان وتفعيله؟")) return;
+    const e = await mutFn({ data: { op: "warranty_approve", id } });
+    if (e) alert(e); else load();
+  }
+  async function cancel(id: string) {
+    if (!confirm("إلغاء الضمان؟")) return;
+    const e = await mutFn({ data: { op: "warranty_cancel", id } });
+    if (e) alert(e); else load();
+  }
+  async function extend(id: string, current: string) {
+    const months = Number(prompt("عدد الأشهر للتمديد:", "12") ?? 0);
+    if (!months || months < 1) return;
+    const d = new Date(current); d.setMonth(d.getMonth() + months);
+    const e = await mutFn({ data: { op: "warranty_extend", id, expiry_date: d.toISOString().slice(0, 10) } });
+    if (e) alert(e); else load();
+  }
+  async function remove(id: string) {
+    if (!confirm("حذف الضمان نهائيًا؟")) return;
+    const e = await mutFn({ data: { op: "warranty_delete", id } });
+    if (e) alert(e); else load();
+  }
+
+  return (
+    <div className="space-y-3">
+      {err && <div className="p-3 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 text-sm">
+        يرجى تسجيل الدخول من <a href="/warranty/auth" className="underline font-bold">بوابة الضمانات</a> بحساب مسؤول. ({err})
+      </div>}
+      <div className="flex flex-wrap gap-2 items-center">
+        <div className="relative flex-1 min-w-48">
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="بحث برقم/عميل/جوال/هيكل..."
+            className="w-full pr-10 pl-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 outline-none focus:border-amber-500" />
+        </div>
+        <select value={filter} onChange={(e) => setFilter(e.target.value as never)} className="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800">
+          <option value="all">كل الحالات</option>
+          <option value="pending">بانتظار الموافقة</option>
+          <option value="active">سارية</option>
+          <option value="expired">منتهية</option>
+          <option value="cancelled">ملغية</option>
+        </select>
+        <button onClick={load} className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200"><RefreshCw className="w-4 h-4" /></button>
+      </div>
+
+      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-x-auto">
+        {busy ? <Loader /> : (
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 dark:bg-slate-900 text-xs">
+              <tr>
+                <th className="p-2 text-right">الرقم</th>
+                <th className="p-2 text-right">العميل</th>
+                <th className="p-2 text-right">الماركة/النوع</th>
+                <th className="p-2 text-right">التفعيل</th>
+                <th className="p-2 text-right">الانتهاء</th>
+                <th className="p-2 text-right">الحالة</th>
+                <th className="p-2 text-right">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((r) => {
+                const s = computeStatus(r.expiry_date, r.status);
+                return (
+                  <tr key={r.id} className="border-t border-slate-100 dark:border-slate-700">
+                    <td className="p-2 font-mono text-xs">{r.warranty_number}</td>
+                    <td className="p-2">{r.customers?.full_name}<div className="text-xs text-slate-500">{r.customers?.phone}</div></td>
+                    <td className="p-2 text-xs">{r.warranty_brands?.name ?? "-"} / {r.film_types?.name ?? "-"}</td>
+                    <td className="p-2 text-xs">{formatDateAr(r.activation_date)}</td>
+                    <td className="p-2 text-xs">{formatDateAr(r.expiry_date)}</td>
+                    <td className="p-2"><span className={`text-xs px-2 py-0.5 rounded-full border ${statusColor[s]}`}>{statusLabel[s]}</span></td>
+                    <td className="p-2 whitespace-nowrap">
+                      {s === "pending" && (
+                        <button onClick={() => approve(r.id)} className="p-1 hover:bg-green-50 rounded" title="موافقة وتفعيل"><CheckCircle2 className="w-4 h-4 text-green-600" /></button>
+                      )}
+                      <button onClick={() => extend(r.id, r.expiry_date)} className="p-1 hover:bg-slate-100 rounded" title="تمديد"><RefreshCw className="w-4 h-4 text-blue-600" /></button>
+                      <button onClick={() => cancel(r.id)} className="p-1 hover:bg-slate-100 rounded" title="إلغاء"><Ban className="w-4 h-4 text-orange-600" /></button>
+                      <button onClick={() => remove(r.id)} className="p-1 hover:bg-slate-100 rounded" title="حذف"><Trash2 className="w-4 h-4 text-red-600" /></button>
+                    </td>
+                  </tr>
+                );
+              })}
+              {filtered.length === 0 && <tr><td colSpan={7} className="p-8 text-center text-slate-500">لا توجد ضمانات</td></tr>}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ================= Customers Tab ================= */
+type CustomerRow = { id: string; full_name: string; phone: string; email: string | null; created_at: string };
+export function WarrantyCustomersTab() {
+  const listFn = useServerFn(adminListCustomers);
+  const mutFn = useServerFn(adminMutate);
+  const [rows, setRows] = useState<CustomerRow[]>([]);
+  const [q, setQ] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const load = async () => {
+    setBusy(true);
+    try {
+      const data = await listFn({ data: undefined as never });
+      setRows((data as CustomerRow[]) ?? []);
+    } catch { setRows([]); }
+    setBusy(false);
+  };
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+
+  async function addManual() {
+    const name = prompt("اسم العميل:") ?? ""; if (!name.trim()) return;
+    const phone = prompt("رقم الجوال:") ?? ""; if (!phone.trim()) return;
+    const e = await mutFn({ data: { op: "customer_insert", full_name: name.trim(), phone: phone.trim() } });
+    if (e) alert(e); else load();
+  }
+  async function edit(r: CustomerRow) {
+    const name = prompt("اسم العميل:", r.full_name) ?? r.full_name;
+    const phone = prompt("رقم الجوال:", r.phone) ?? r.phone;
+    const e = await mutFn({ data: { op: "customer_update", id: r.id, full_name: name, phone } });
+    if (e) alert(e); else load();
+  }
+  async function remove(id: string) {
+    if (!confirm("حذف العميل؟")) return;
+    const e = await mutFn({ data: { op: "customer_delete", id } });
+    if (e) alert(e); else load();
+  }
+
+  const filtered = rows.filter((r) => {
+    const t = q.trim().toLowerCase(); if (!t) return true;
+    return r.full_name.toLowerCase().includes(t) || r.phone.includes(t) || (r.email ?? "").toLowerCase().includes(t);
+  });
+
+  return (
+    <div className="space-y-3">
+      <div className="flex flex-wrap gap-2">
+        <div className="relative flex-1 min-w-48">
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="بحث..." className="w-full pr-10 pl-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 outline-none focus:border-amber-500" />
+        </div>
+        <button onClick={addManual} className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-medium">+ عميل جديد</button>
+      </div>
+      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-x-auto">
+        {busy ? <Loader /> : (
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 dark:bg-slate-900 text-xs"><tr>
+              <th className="p-2 text-right">الاسم</th><th className="p-2 text-right">الجوال</th><th className="p-2 text-right">البريد</th><th className="p-2 text-right">التسجيل</th><th className="p-2"></th>
+            </tr></thead>
+            <tbody>
+              {filtered.map((r) => (
+                <tr key={r.id} className="border-t border-slate-100 dark:border-slate-700">
+                  <td className="p-2">{r.full_name}</td>
+                  <td className="p-2 font-mono text-xs">{r.phone}</td>
+                  <td className="p-2 text-xs">{r.email ?? "-"}</td>
+                  <td className="p-2 text-xs">{formatDateAr(r.created_at)}</td>
+                  <td className="p-2 whitespace-nowrap">
+                    <button onClick={() => edit(r)} className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 mr-1">تعديل</button>
+                    <button onClick={() => remove(r.id)} className="text-xs px-2 py-1 rounded bg-red-100 text-red-700">حذف</button>
+                  </td>
+                </tr>
+              ))}
+              {filtered.length === 0 && <tr><td colSpan={5} className="p-8 text-center text-slate-500">لا يوجد عملاء</td></tr>}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ================= Generic Simple CRUD ================= */
+type Field = { k: string; l: string; type?: "text" | "number" };
+type SimpleTable = "warranty_brands" | "film_types" | "branches";
+export function WarrantySimpleCrud({ table, title, fields }: { table: SimpleTable; title: string; fields: Field[] }) {
+  const listFn = useServerFn(adminListSimple);
+  const mutFn = useServerFn(adminMutate);
+  const [rows, setRows] = useState<Array<Record<string, unknown> & { id: string; is_active?: boolean }>>([]);
+  const [busy, setBusy] = useState(false);
+  const load = async () => {
+    setBusy(true);
+    try {
+      const data = await listFn({ data: { table } });
+      setRows((data as never) ?? []);
+    } catch { setRows([]); }
+    setBusy(false);
+  };
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [table]);
+
+  async function addRow() {
+    const rec: Record<string, unknown> = {};
+    for (const f of fields) {
+      const v = prompt(f.l) ?? "";
+      if (!v) continue;
+      rec[f.k] = f.type === "number" ? Number(v) : v;
+    }
+    if (!rec.name) return;
+    const e = await mutFn({ data: { op: "simple_insert", table, values: rec } });
+    if (e) alert(e); else load();
+  }
+  async function editRow(r: Record<string, unknown> & { id: string }) {
+    const rec: Record<string, unknown> = {};
+    for (const f of fields) {
+      const cur = String(r[f.k] ?? "");
+      const v = prompt(f.l, cur) ?? cur;
+      rec[f.k] = f.type === "number" ? Number(v) : v;
+    }
+    const e = await mutFn({ data: { op: "simple_update", table, id: r.id, values: rec } });
+    if (e) alert(e); else load();
+  }
+  async function toggle(r: { id: string; is_active?: boolean }) {
+    const e = await mutFn({ data: { op: "simple_toggle", table, id: r.id, is_active: !r.is_active } });
+    if (e) alert(e); else load();
+  }
+  async function del(id: string) {
+    if (!confirm("حذف؟")) return;
+    const e = await mutFn({ data: { op: "simple_delete", table, id } });
+    if (e) alert(e); else load();
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex justify-between items-center">
+        <h3 className="font-bold text-lg">{title}</h3>
+        <button onClick={addRow} className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-medium">+ إضافة</button>
+      </div>
+      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-x-auto">
+        {busy ? <Loader /> : (
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 dark:bg-slate-900 text-xs"><tr>
+              {fields.map((f) => <th key={f.k} className="p-2 text-right">{f.l}</th>)}
+              <th className="p-2 text-right">الحالة</th>
+              <th className="p-2"></th>
+            </tr></thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.id} className="border-t border-slate-100 dark:border-slate-700">
+                  {fields.map((f) => <td key={f.k} className="p-2">{String(r[f.k] ?? "-")}</td>)}
+                  <td className="p-2">
+                    <button onClick={() => toggle(r)} className={`text-xs px-2 py-0.5 rounded-full border ${r.is_active ? "bg-green-100 text-green-800 border-green-300" : "bg-gray-100 text-gray-700 border-gray-300"}`}>
+                      {r.is_active ? "مفعّل" : "متوقف"}
+                    </button>
+                  </td>
+                  <td className="p-2 whitespace-nowrap">
+                    <button onClick={() => editRow(r)} className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 mr-1">تعديل</button>
+                    <button onClick={() => del(r.id)} className="text-xs px-2 py-1 rounded bg-red-100 text-red-700">حذف</button>
+                  </td>
+                </tr>
+              ))}
+              {rows.length === 0 && <tr><td colSpan={fields.length + 2} className="p-8 text-center text-slate-500">لا توجد بيانات</td></tr>}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+}
