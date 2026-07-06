@@ -54,8 +54,8 @@ function WHeader() {
                 <PlusCircle className="w-4 h-4" /> <span className="hidden sm:inline">تفعيل ضمان</span>
               </Link>
               {(isAdmin || isStaff) && (
-                <Link to="/warranty/admin" className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600">
-                  <ShieldCheck className="w-4 h-4" /> الإدارة
+                <Link to="/admin" className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600">
+                  <ShieldCheck className="w-4 h-4" /> لوحة التحكم
                 </Link>
               )}
               <button

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Search, Heart, User, ShoppingCart, ShieldCheck } from "lucide-react";
+import { Search, Heart, ShoppingCart, ShieldCheck } from "lucide-react";
 
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
@@ -49,9 +49,6 @@ export function Header() {
           <button className="p-2 rounded-full hover:bg-[var(--color-surface)]" aria-label="المفضلة">
             <Heart className="w-5 h-5 text-[var(--color-gold)]" />
           </button>
-          <Link to="/admin" className="p-2 rounded-full hover:bg-[var(--color-surface)]" aria-label="الحساب">
-            <User className="w-5 h-5 text-[var(--color-gold)]" />
-          </Link>
           <Link to="/cart" className="relative p-2 rounded-full hover:bg-[var(--color-surface)]" aria-label="السلة">
             <ShoppingCart className="w-5 h-5 text-[var(--color-gold)]" />
             <span className="absolute -top-1 -left-1 bg-[var(--color-gold)] text-[var(--color-ink)] text-[10px] font-bold rounded-full min-w-4 h-4 px-1 flex items-center justify-center">

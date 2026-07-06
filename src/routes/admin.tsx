@@ -12,6 +12,9 @@ import {
   adminDelete, uploadImage, listOrders, updateOrderStatus, adminLogin,
   deleteOrder, listAllReviews, deleteReview,
 } from "@/lib/admin.functions";
+import {
+  WarrantyOverview, WarrantiesTab, WarrantyCustomersTab, WarrantySimpleCrud,
+} from "@/components/warranty-admin-panels";
 
 // Session token issued by the server-side `adminLogin` function. The actual
 // admin password is never stored in the client bundle or in browser storage.
@@ -22,7 +25,9 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type Tab = "orders" | "products" | "categories" | "services" | "packages" | "wallets" | "content" | "reviews";
+type Tab =
+  | "orders" | "products" | "categories" | "services" | "packages" | "wallets" | "content" | "reviews"
+  | "w-overview" | "w-warranties" | "w-customers" | "w-brands" | "w-films" | "w-branches";
 
 function AdminPage() {
   const login = useServerFn(adminLogin);
@@ -100,15 +105,31 @@ function getPwd() {
 function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("orders");
 
-  const tabs: { id: Tab; label: string }[] = [
-    { id: "orders", label: "الطلبات" },
-    { id: "products", label: "المنتجات" },
-    { id: "categories", label: "الأقسام" },
-    { id: "services", label: "الخدمات" },
-    { id: "packages", label: "البكجات" },
-    { id: "wallets", label: "المحافظ" },
-    { id: "reviews", label: "التقييمات" },
-    { id: "content", label: "المحتوى" },
+  const groups: { title: string; tabs: { id: Tab; label: string }[] }[] = [
+    {
+      title: "المتجر",
+      tabs: [
+        { id: "orders", label: "الطلبات" },
+        { id: "products", label: "المنتجات" },
+        { id: "categories", label: "الأقسام" },
+        { id: "services", label: "الخدمات" },
+        { id: "packages", label: "البكجات" },
+        { id: "wallets", label: "المحافظ" },
+        { id: "reviews", label: "التقييمات" },
+        { id: "content", label: "المحتوى" },
+      ],
+    },
+    {
+      title: "الضمانات",
+      tabs: [
+        { id: "w-overview", label: "نظرة عامة" },
+        { id: "w-warranties", label: "الضمانات" },
+        { id: "w-customers", label: "عملاء الضمان" },
+        { id: "w-brands", label: "الماركات" },
+        { id: "w-films", label: "أنواع اللاصق" },
+        { id: "w-branches", label: "الفروع" },
+      ],
+    },
   ];
 
   return (
@@ -117,26 +138,31 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h1 className="text-2xl md:text-3xl font-black">لوحة التحكم</h1>
-            <p className="text-sm text-[var(--color-ink-soft)]">مرحباً الزبير</p>
+            <p className="text-sm text-[var(--color-ink-soft)]">إدارة المتجر والضمانات</p>
           </div>
           <button onClick={onLogout} className="btn-outline"><LogOut className="w-4 h-4" /> خروج</button>
         </div>
 
-        <div className="flex gap-2 mt-6 overflow-x-auto pb-2">
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition ${
-                tab === t.id
-                  ? "bg-[var(--color-gold)] text-[var(--color-ink)]"
-                  : "bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:bg-[var(--color-gold-soft)]"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+        {groups.map((g) => (
+          <div key={g.title} className="mt-4">
+            <div className="text-xs font-bold text-[var(--color-ink-soft)] mb-2">{g.title}</div>
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {g.tabs.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition ${
+                    tab === t.id
+                      ? "bg-[var(--color-gold)] text-[var(--color-ink)]"
+                      : "bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:bg-[var(--color-gold-soft)]"
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
 
         <div className="mt-6">
           {tab === "orders" && <OrdersPanel />}
@@ -147,6 +173,12 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           {tab === "wallets" && <WalletsPanel />}
           {tab === "reviews" && <ReviewsPanel />}
           {tab === "content" && <ContentPanel />}
+          {tab === "w-overview" && <WarrantyOverview />}
+          {tab === "w-warranties" && <WarrantiesTab />}
+          {tab === "w-customers" && <WarrantyCustomersTab />}
+          {tab === "w-brands" && <WarrantySimpleCrud table="warranty_brands" title="الماركات" fields={[{ k: "name", l: "الاسم" }, { k: "logo_url", l: "رابط الشعار" }]} />}
+          {tab === "w-films" && <WarrantySimpleCrud table="film_types" title="أنواع اللاصق" fields={[{ k: "name", l: "الاسم" }, { k: "warranty_months", l: "مدة الضمان (شهر)", type: "number" }, { k: "description", l: "الوصف" }]} />}
+          {tab === "w-branches" && <WarrantySimpleCrud table="branches" title="الفروع" fields={[{ k: "name", l: "الاسم" }, { k: "address", l: "العنوان" }, { k: "phone", l: "الجوال" }]} />}
         </div>
       </div>
     </Shell>
