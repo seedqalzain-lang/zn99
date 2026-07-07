@@ -17,7 +17,8 @@ type CarRow = { id: string; brand_id: string | null; model: string | null; year:
 function ActivatePage() {
   const { user, loading } = useWarrantyAuth();
   const navigate = useNavigate();
-  const { car: preselectCar } = Route.useSearch();
+  const preselectCar = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("car") ?? undefined : undefined;
+
 
   const [brands, setBrands] = useState<Brand[]>([]);
   const [films, setFilms] = useState<Film[]>([]);
