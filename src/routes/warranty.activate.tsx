@@ -1,27 +1,33 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useWarrantyAuth } from "@/lib/warranty-auth";
-import { Loader2, PlusCircle } from "lucide-react";
+import { Loader2, PlusCircle, Car } from "lucide-react";
 
 export const Route = createFileRoute("/warranty/activate")({
   component: ActivatePage,
+  validateSearch: (s: Record<string, unknown>) => ({ car: typeof s.car === "string" ? s.car : undefined }),
 });
 
 type Brand = { id: string; name: string };
 type Film = { id: string; name: string; warranty_months: number; brand_id: string | null };
 type Branch = { id: string; name: string };
+type CarRow = { id: string; brand_id: string | null; model: string | null; year: number | null; plate_number: string | null; vin: string | null };
 
 function ActivatePage() {
   const { user, loading } = useWarrantyAuth();
   const navigate = useNavigate();
+  const { car: preselectCar } = Route.useSearch();
+
   const [brands, setBrands] = useState<Brand[]>([]);
   const [films, setFilms] = useState<Film[]>([]);
   const [branches, setBranches] = useState<Branch[]>([]);
+  const [cars, setCars] = useState<CarRow[]>([]);
   const [customerId, setCustomerId] = useState<string | null>(null);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [warrantyNumber, setWarrantyNumber] = useState("");
+  const [carId, setCarId] = useState<string>("");
   const [brandId, setBrandId] = useState("");
   const [filmId, setFilmId] = useState("");
   const [vin, setVin] = useState("");
@@ -47,9 +53,24 @@ function ActivatePage() {
         setCustomerId(c.data.id);
         setCustomerName(c.data.full_name ?? "");
         setCustomerPhone(c.data.phone ?? "");
+        const carsRes = await supabase.from("cars" as never).select("id, brand_id, model, year, plate_number, vin").eq("customer_id", c.data.id).order("created_at", { ascending: false });
+        const carsAny = carsRes as unknown as { data: CarRow[] | null };
+        setCars(carsAny.data ?? []);
+        if (preselectCar && (carsAny.data ?? []).some((x) => x.id === preselectCar)) {
+          setCarId(preselectCar);
+        }
       }
     })();
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, preselectCar]);
+
+  // When car changes, prefill brand + vin
+  useEffect(() => {
+    if (!carId) return;
+    const c = cars.find((x) => x.id === carId);
+    if (!c) return;
+    if (c.brand_id) setBrandId(c.brand_id);
+    if (c.vin) setVin(c.vin);
+  }, [carId, cars]);
 
   const selectedFilm = films.find((x) => x.id === filmId);
 
@@ -69,7 +90,6 @@ function ActivatePage() {
       }
       if (!cid) throw new Error("تعذر إنشاء سجل العميل");
 
-      // Warranty number
       let num = warrantyNumber.trim();
       if (!num) {
         const r = await (supabase.rpc as unknown as (n: string) => Promise<{ data: string | null; error: { message: string } | null }>)("generate_warranty_number");
@@ -90,8 +110,8 @@ function ActivatePage() {
         branch_id: branchId || null,
         activation_date: activationDate,
         expiry_date: exp.toISOString().slice(0, 10),
-        // status omitted → DB default 'pending' (بانتظار موافقة المسؤول)
-      });
+        ...(carId ? { car_id: carId } : {}),
+      } as never);
       if (error) throw error;
       setMsg({ t: "ok", m: `تم تسجيل الضمان: ${num} — بانتظار موافقة المسؤول` });
       setTimeout(() => navigate({ to: "/warranty/dashboard" }), 1000);
@@ -108,7 +128,29 @@ function ActivatePage() {
         <h1 className="text-2xl font-bold mb-1 flex items-center gap-2">
           <PlusCircle className="w-6 h-6 text-amber-500" /> تفعيل ضمان جديد
         </h1>
-        <p className="text-sm text-slate-500 mb-5">املأ البيانات لتسجيل ضمان جديد.</p>
+        <p className="text-sm text-slate-500 mb-5">اختر سيارة موجودة أو أدخل البيانات يدويًا.</p>
+
+        {cars.length > 0 && (
+          <div className="mb-5 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50">
+            <label className="block">
+              <div className="text-xs font-bold text-amber-800 dark:text-amber-300 mb-2 flex items-center gap-1"><Car className="w-4 h-4" /> اختر سيارة من قائمتك</div>
+              <select value={carId} onChange={(e) => setCarId(e.target.value)} className="w-full px-3 py-2 border border-amber-300 dark:border-amber-700 rounded-lg bg-white dark:bg-slate-900">
+                <option value="">-- إدخال يدوي --</option>
+                {cars.map((c) => {
+                  const b = brands.find((x) => x.id === c.brand_id)?.name ?? "";
+                  return <option key={c.id} value={c.id}>{[b, c.model, c.year, c.plate_number].filter(Boolean).join(" · ")}</option>;
+                })}
+              </select>
+              <Link to="/warranty/cars" className="inline-block mt-2 text-xs text-amber-700 dark:text-amber-400 hover:underline">إدارة سياراتي ←</Link>
+            </label>
+          </div>
+        )}
+
+        {cars.length === 0 && (
+          <div className="mb-5 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 text-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+            💡 <Link to="/warranty/cars" className="text-amber-600 hover:underline font-bold">أضف سياراتك</Link> مسبقًا لتوفير الوقت في المرات القادمة.
+          </div>
+        )}
 
         <form onSubmit={submit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <TxtField label="رقم الضمان (اختياري - يُولّد تلقائيًا)" value={warrantyNumber} onChange={setWarrantyNumber} placeholder="TM-2025-000000" />
