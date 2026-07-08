@@ -7,8 +7,9 @@ import html2canvas from "html2canvas";
 import { useWarrantyAuth } from "@/lib/warranty-auth";
 import { verifyWarranty } from "@/lib/warranty-public.functions";
 import { formatDateAr, statusLabel, statusColor, computeStatus, type WarrantyStatus, verifyUrl } from "@/lib/warranty-utils";
-import { Download, Printer, ArrowRight, Loader2 } from "lucide-react";
+import { Download, Printer, ArrowRight, Loader2, MessageCircle } from "lucide-react";
 import logoAsset from "@/assets/logo-tajalmoluk.png.asset.json";
+import { whatsappLink } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/warranty/certificate/$id")({
   component: CertificatePage,
@@ -114,6 +115,13 @@ function CertificatePage() {
         <button onClick={downloadPdf} disabled={downloading} className="inline-flex items-center gap-1 text-sm px-3 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 disabled:opacity-60">
           {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} تحميل PDF
         </button>
+        <a
+          href={whatsappLink(`شهادة ضمان تاج الملوك\nرقم الضمان: ${data.warranty_number}\nالعميل: ${data.customer_name ?? "-"}\nتاريخ الانتهاء: ${formatDateAr(data.expiry_date)}\n\nللتحقق: ${verifyUrl(data.warranty_number)}`)}
+          target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-sm px-3 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
+        >
+          <MessageCircle className="w-4 h-4" /> واتساب
+        </a>
       </div>
 
       <div ref={certRef} className="max-w-3xl mx-auto bg-white text-slate-900 rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-500 print:shadow-none print:border-2">

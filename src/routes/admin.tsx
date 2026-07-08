@@ -13,7 +13,7 @@ import {
   deleteOrder, listAllReviews, deleteReview,
 } from "@/lib/admin.functions";
 import {
-  WarrantyOverview, WarrantiesTab, WarrantyCustomersTab, WarrantySimpleCrud,
+  WarrantyOverview, WarrantiesTab, WarrantyCustomersTab, WarrantySimpleCrud, WarrantyUsersTab,
 } from "@/components/warranty-admin-panels";
 
 // Session token issued by the server-side `adminLogin` function. The actual
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/admin")({
 
 type Tab =
   | "orders" | "products" | "categories" | "services" | "packages" | "wallets" | "content" | "reviews"
-  | "w-overview" | "w-warranties" | "w-customers" | "w-brands" | "w-films" | "w-branches";
+  | "w-overview" | "w-warranties" | "w-customers" | "w-brands" | "w-films" | "w-branches" | "w-users";
 
 function AdminPage() {
   const login = useServerFn(adminLogin);
@@ -128,6 +128,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         { id: "w-brands", label: "الماركات" },
         { id: "w-films", label: "أنواع اللاصق" },
         { id: "w-branches", label: "الفروع" },
+        { id: "w-users", label: "المستخدمون والصلاحيات" },
       ],
     },
   ];
@@ -179,6 +180,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           {tab === "w-brands" && <WarrantySimpleCrud table="warranty_brands" title="الماركات" fields={[{ k: "name", l: "الاسم" }, { k: "logo_url", l: "رابط الشعار" }]} />}
           {tab === "w-films" && <WarrantySimpleCrud table="film_types" title="أنواع اللاصق" fields={[{ k: "name", l: "الاسم" }, { k: "warranty_months", l: "مدة الضمان (شهر)", type: "number" }, { k: "description", l: "الوصف" }]} />}
           {tab === "w-branches" && <WarrantySimpleCrud table="branches" title="الفروع" fields={[{ k: "name", l: "الاسم" }, { k: "address", l: "العنوان" }, { k: "phone", l: "الجوال" }]} />}
+          {tab === "w-users" && <WarrantyUsersTab />}
         </div>
       </div>
     </Shell>
