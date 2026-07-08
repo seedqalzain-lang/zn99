@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-type Role = "admin" | "branch_staff" | "customer";
+type Role = "admin" | "super_admin" | "manager" | "branch_staff" | "customer";
 
 type Ctx = {
   session: Session | null;
@@ -55,8 +55,8 @@ export function WarrantyAuthProvider({ children }: { children: ReactNode }) {
     user: session?.user ?? null,
     roles,
     loading,
-    isAdmin: roles.includes("admin"),
-    isStaff: roles.includes("branch_staff") || roles.includes("admin"),
+    isAdmin: roles.includes("admin") || roles.includes("super_admin"),
+    isStaff: roles.some((r) => ["admin", "super_admin", "manager", "branch_staff"].includes(r)),
     refresh,
     signOut: async () => { await supabase.auth.signOut(); setRoles([]); },
   };
