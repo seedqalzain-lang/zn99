@@ -91,7 +91,7 @@ export const adminRevokeRole = createServerFn({ method: "POST" })
       throw new Error("لا يمكنك إزالة دور الأدمن من حسابك");
     }
     const { error } = await supabaseAdmin.from("user_roles").delete()
-      .eq("user_id", data.user_id).eq("role", data.role);
+      .eq("user_id", data.user_id).eq("role", data.role as never);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
