@@ -2,12 +2,16 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 async function assertStaff(supabase: any, userId: string) {
-  const [{ data: isAdmin }, { data: isStaff }] = await Promise.all([
+  const [{ data: isAdmin }, { data: isSuper }, { data: isManager }, { data: isStaff }] = await Promise.all([
     supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
+    supabase.rpc("has_role", { _user_id: userId, _role: "super_admin" }),
+    supabase.rpc("has_role", { _user_id: userId, _role: "manager" }),
     supabase.rpc("has_role", { _user_id: userId, _role: "branch_staff" }),
   ]);
-  if (!isAdmin && !isStaff) throw new Error("Forbidden");
-  return { isAdmin: !!isAdmin, isStaff: !!isStaff };
+  const admin = !!isAdmin || !!isSuper;
+  const staff = admin || !!isManager || !!isStaff;
+  if (!staff) throw new Error("Forbidden");
+  return { isAdmin: admin, isStaff: staff };
 }
 
 export const adminListWarranties = createServerFn({ method: "POST" })
