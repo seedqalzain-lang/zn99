@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "f7f87699-eed0-4ee2-85e0-ac775ddf75d5",
-  "project_id": "d9b50b44-a34e-4664-8ead-35ef0fedabcc",
-  "url": "/__l5e/assets-v1/f7f87699-eed0-4ee2-85e0-ac775ddf75d5/logo-tajalmoluk.png",
-  "r2_key": "a/v1/d9b50b44-a34e-4664-8ead-35ef0fedabcc/f7f87699-eed0-4ee2-85e0-ac775ddf75d5/logo-tajalmoluk.png",
-  "original_filename": "logo-tajalmoluk.png",
-  "size": 761964,
   "content_type": "image/png",
-  "created_at": "2026-06-25T00:10:19Z"
+  "created_at": "2026-06-25T00:10:19Z",
+  "original_filename": "logo-tajalmoluk.png",
+  "project_id": "4878ae39-10e2-4d14-b8ba-c4bbe7950027",
+  "r2_key": "a/v1/4878ae39-10e2-4d14-b8ba-c4bbe7950027/f7f87699-eed0-4ee2-85e0-ac775ddf75d5/logo-tajalmoluk.png",
+  "size": 761964,
+  "url": "/__l5e/assets-v1/f7f87699-eed0-4ee2-85e0-ac775ddf75d5/logo-tajalmoluk.png",
+  "version": 1
 }
