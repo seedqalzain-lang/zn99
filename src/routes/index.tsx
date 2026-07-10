@@ -23,10 +23,10 @@ const featuredQO = queryOptions({ queryKey: ["featured-products"], queryFn: () =
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "تاج الملوك — مركز متكامل للعناية بالسيارات" },
-      { name: "description", content: "متجر إلكتروني وخدمات احترافية للسيارات: PPF، نانو سيراميك، اكسسوارات، منظفات وعطور." },
-      { property: "og:title", content: "تاج الملوك — مركز متكامل للعناية بالسيارات" },
-      { property: "og:description", content: "متجر إلكتروني وخدمات احترافية للسيارات: PPF، نانو سيراميك، اكسسوارات، منظفات وعطور." },
+      { title: "متجر زين" },
+      { name: "description", content: "ppf_نانو سيراميك _عازل حراري _تلميع_تنجيد _اكسيوارات\nلجميع  منتجات وخدمات السيارات" },
+      { property: "og:title", content: "متجر زين" },
+      { property: "og:description", content: "ppf_نانو سيراميك _عازل حراري _تلميع_تنجيد _اكسيوارات\nلجميع  منتجات وخدمات السيارات" },
       { property: "og:url", content: "https://tajalmoluk.lovable.app/" },
       { property: "og:type", content: "website" },
     ],
