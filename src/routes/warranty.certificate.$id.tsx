@@ -116,7 +116,7 @@ function CertificatePage() {
           {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} تحميل PDF
         </button>
         <a
-          href={whatsappLink(`شهادة ضمان تاج الملوك\nرقم الضمان: ${data.warranty_number}\nالعميل: ${data.customer_name ?? "-"}\nتاريخ الانتهاء: ${formatDateAr(data.expiry_date)}\n\nللتحقق: ${verifyUrl(data.warranty_number)}`)}
+          href={whatsappLink(`شهادة ضمان زين\nرقم الضمان: ${data.warranty_number}\nالعميل: ${data.customer_name ?? "-"}\nتاريخ الانتهاء: ${formatDateAr(data.expiry_date)}\n\nللتحقق: ${verifyUrl(data.warranty_number)}`)}
           target="_blank" rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-sm px-3 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
         >
@@ -127,9 +127,9 @@ function CertificatePage() {
       <div ref={certRef} className="max-w-3xl mx-auto bg-white text-slate-900 rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-500 print:shadow-none print:border-2">
         <div className="bg-gradient-to-l from-amber-500 to-yellow-500 text-white p-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src={logoAsset.url} alt="تاج الملوك" className="h-16 w-auto bg-white rounded-lg p-1" />
+            <img src={logoAsset.url} alt="زين" className="h-16 w-auto bg-white rounded-lg p-1" />
             <div>
-              <h1 className="text-2xl font-black">تاج الملوك</h1>
+              <h1 className="text-2xl font-black">زين</h1>
               <p className="text-sm opacity-90">شهادة ضمان رسمية</p>
             </div>
           </div>
@@ -161,7 +161,7 @@ function CertificatePage() {
         </div>
 
         <div className="bg-slate-50 p-4 text-center text-xs text-slate-600 border-t border-slate-200">
-          هذه الشهادة صادرة عن مؤسسة تاج الملوك للعناية وزينة السيارات - صنعاء، اليمن. لأي استفسار: 782222919
+          هذه الشهادة صادرة عن مؤسسة زين للعناية وزينة السيارات - صنعاء، اليمن. لأي استفسار: 782222919
         </div>
       </div>
     </div>

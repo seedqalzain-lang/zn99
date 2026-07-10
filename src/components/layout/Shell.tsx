@@ -3,7 +3,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { BottomNav } from "./BottomNav";
 
-const TOP_BAR_TEXT = "👑 أهلاً بكم في تاج الملوك للعناية وزينة السيارات — جودة ملكية وعروض حصرية! 👑";
+const TOP_BAR_TEXT = "👑 أهلاً بكم في زين للعناية وزينة السيارات — جودة ملكية وعروض حصرية! 👑";
 
 export function Shell({ children }: { children: React.ReactNode }) {
   return (

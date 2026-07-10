@@ -78,7 +78,7 @@ function Consent() {
     <main className="max-w-md mx-auto p-6">
       <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow p-6 space-y-4" dir="rtl">
         <h1 className="text-xl font-bold">
-          ربط {clientName} بحسابك في تاج الملوك
+          ربط {clientName} بحسابك في زين
         </h1>
         <p className="text-sm text-slate-600 dark:text-slate-300">
           سيتمكّن {clientName} من استدعاء أدوات هذا التطبيق نيابةً عنك أثناء تسجيل دخولك.

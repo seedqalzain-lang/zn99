@@ -7,10 +7,10 @@ import { SALES_PHONE, WHATSAPP_NUMBER, whatsappLink } from "@/lib/whatsapp";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "اتصل بنا — تاج الملوك" },
-      { name: "description", content: "تواصل مع تاج الملوك للعناية وزينة السيارات — صنعاء، شارع 22 مايو، جوار فندق الأحلام، قبل جولة الثقافة." },
-      { property: "og:title", content: "اتصل بنا — تاج الملوك" },
-      { property: "og:description", content: "تواصل مع تاج الملوك للعناية وزينة السيارات — صنعاء، شارع 22 مايو، جوار فندق الأحلام، قبل جولة الثقافة." },
+      { title: "اتصل بنا — زين" },
+      { name: "description", content: "تواصل مع زين للعناية وزينة السيارات — صنعاء، شارع 22 مايو، جوار فندق الأحلام، قبل جولة الثقافة." },
+      { property: "og:title", content: "اتصل بنا — زين" },
+      { property: "og:description", content: "تواصل مع زين للعناية وزينة السيارات — صنعاء، شارع 22 مايو، جوار فندق الأحلام، قبل جولة الثقافة." },
       { property: "og:url", content: "https://tajalmoluk.lovable.app/contact" },
       { property: "og:type", content: "website" },
     ],

@@ -10,9 +10,9 @@ const servicesQO = queryOptions({ queryKey: ["services"], queryFn: () => getServ
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "الخدمات — تاج الملوك" },
+      { title: "الخدمات — زين" },
       { name: "description", content: "خدمات احترافية للعناية بسيارتك: PPF، نانو سيراميك، تنجيد، سمكرة ورش، كهرباء، واكسسوارات." },
-      { property: "og:title", content: "الخدمات — تاج الملوك" },
+      { property: "og:title", content: "الخدمات — زين" },
       { property: "og:description", content: "خدمات احترافية للعناية بسيارتك: PPF، نانو سيراميك، تنجيد، سمكرة ورش، كهرباء، واكسسوارات." },
       { property: "og:url", content: "https://tajalmoluk.lovable.app/services" },
       { property: "og:type", content: "website" },

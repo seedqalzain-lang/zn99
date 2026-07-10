@@ -10,10 +10,10 @@ const packagesQO = queryOptions({ queryKey: ["packages"], queryFn: () => getPack
 export const Route = createFileRoute("/offers")({
   head: () => ({
     meta: [
-      { title: "العروض — تاج الملوك" },
-      { name: "description", content: "بكجات وعروض حصرية على خدمات ومنتجات تاج الملوك — استفد قبل انتهاء العرض." },
-      { property: "og:title", content: "العروض — تاج الملوك" },
-      { property: "og:description", content: "بكجات وعروض حصرية على خدمات ومنتجات تاج الملوك — استفد قبل انتهاء العرض." },
+      { title: "العروض — زين" },
+      { name: "description", content: "بكجات وعروض حصرية على خدمات ومنتجات زين — استفد قبل انتهاء العرض." },
+      { property: "og:title", content: "العروض — زين" },
+      { property: "og:description", content: "بكجات وعروض حصرية على خدمات ومنتجات زين — استفد قبل انتهاء العرض." },
       { property: "og:url", content: "https://tajalmoluk.lovable.app/offers" },
       { property: "og:type", content: "website" },
     ],

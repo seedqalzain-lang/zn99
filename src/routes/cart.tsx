@@ -6,10 +6,10 @@ import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
-      { title: "السلة — تاج الملوك" },
-      { name: "description", content: "راجع منتجاتك في السلة وأكمل الطلب بسهولة عبر تاج الملوك." },
-      { property: "og:title", content: "السلة — تاج الملوك" },
-      { property: "og:description", content: "راجع منتجاتك في السلة وأكمل الطلب بسهولة عبر تاج الملوك." },
+      { title: "السلة — زين" },
+      { name: "description", content: "راجع منتجاتك في السلة وأكمل الطلب بسهولة عبر زين." },
+      { property: "og:title", content: "السلة — زين" },
+      { property: "og:description", content: "راجع منتجاتك في السلة وأكمل الطلب بسهولة عبر زين." },
       { property: "og:url", content: "https://tajalmoluk.lovable.app/cart" },
       { property: "og:type", content: "website" },
     ],

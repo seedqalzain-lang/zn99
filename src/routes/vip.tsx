@@ -7,10 +7,10 @@ import { whatsappLink } from "@/lib/whatsapp";
 export const Route = createFileRoute("/vip")({
   head: () => ({
     meta: [
-      { title: "VIP — خدمة الفريق المتنقل — تاج الملوك" },
-      { name: "description", content: "فريق تاج الملوك المتنقل يصلك أينما كنت في صنعاء — كراج كامل + إضاءة + كهرباء." },
-      { property: "og:title", content: "VIP — خدمة الفريق المتنقل — تاج الملوك" },
-      { property: "og:description", content: "فريق تاج الملوك المتنقل يصلك أينما كنت في صنعاء — كراج كامل + إضاءة + كهرباء." },
+      { title: "VIP — خدمة الفريق المتنقل — زين" },
+      { name: "description", content: "فريق زين المتنقل يصلك أينما كنت في صنعاء — كراج كامل + إضاءة + كهرباء." },
+      { property: "og:title", content: "VIP — خدمة الفريق المتنقل — زين" },
+      { property: "og:description", content: "فريق زين المتنقل يصلك أينما كنت في صنعاء — كراج كامل + إضاءة + كهرباء." },
       { property: "og:url", content: "https://tajalmoluk.lovable.app/vip" },
       { property: "og:type", content: "website" },
     ],

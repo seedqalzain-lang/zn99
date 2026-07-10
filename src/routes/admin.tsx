@@ -21,7 +21,7 @@ import {
 const TOKEN_KEY = "mycar_admin_token";
 
 export const Route = createFileRoute("/admin")({
-  head: () => ({ meta: [{ title: "لوحة التحكم — تاج الملوك" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "لوحة التحكم — زين" }, { name: "robots", content: "noindex" }] }),
   component: AdminPage,
 });
 

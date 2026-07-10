@@ -59,7 +59,7 @@ function HomePage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
         <div className="relative max-w-7xl mx-auto px-4 py-20 md:py-32 text-center text-white">
-          <img src={logoAsset.url} alt="تاج الملوك لزينة السيارات" className="mx-auto h-32 md:h-48 w-auto object-contain drop-shadow-2xl" />
+          <img src={logoAsset.url} alt="زين لزينة السيارات" className="mx-auto h-32 md:h-48 w-auto object-contain drop-shadow-2xl" />
           <p className="mt-4 text-base md:text-2xl font-semibold text-[var(--color-gold)]">للعناية وزينة السيارات</p>
           <p className="mt-2 text-sm md:text-base text-gray-200 max-w-xl mx-auto">
             متجر فاخر وخدمات احترافية — كل ما تحتاجه سيارتك في مكان واحد.

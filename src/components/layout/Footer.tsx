@@ -19,9 +19,9 @@ export function Footer() {
     <footer className="bg-white border-t border-[var(--color-hairline)] mt-16">
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div>
-          <img src={logoAsset.url} alt="تاج الملوك" className="h-16 w-auto object-contain" />
+          <img src={logoAsset.url} alt="زين" className="h-16 w-auto object-contain" />
           <p className="text-sm text-[var(--color-ink-soft)] mt-3 leading-relaxed">
-            تاج الملوك للعناية وزينة السيارات — جودة ملكية وخدمة احترافية في صنعاء.
+            زين للعناية وزينة السيارات — جودة ملكية وخدمة احترافية في صنعاء.
           </p>
           <p className="text-xs text-[var(--color-ink-soft)] mt-3">
             المدير العام: <span className="font-semibold text-[var(--color-ink)]">الزبير</span>
@@ -41,7 +41,7 @@ export function Footer() {
           </ul>
           <div className="flex items-center gap-3 mt-5">
             <a
-              href="https://www.instagram.com/al_zubair_20?igsh=MXVwczN3eXliN2p6Yw=="
+              href="https://instagram.com/z_n.9.9"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="إنستغرام"
@@ -77,7 +77,7 @@ export function Footer() {
 
       <div className="border-t border-[var(--color-hairline)]">
         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row gap-2 justify-between items-center text-xs text-[var(--color-ink-soft)]">
-          <p>© {new Date().getFullYear()} تاج الملوك — جميع الحقوق محفوظة</p>
+          <p>© {new Date().getFullYear()} زين — جميع الحقوق محفوظة</p>
           <p>
             تطوير: <a href={`tel:${DEV_PHONE}`} className="text-[var(--color-gold)] font-semibold">صديق الزين {DEV_PHONE}</a>
           </p>

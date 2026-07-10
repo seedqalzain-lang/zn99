@@ -1,11 +1,11 @@
 {
-  "asset_id": "f7f87699-eed0-4ee2-85e0-ac775ddf75d5",
-  "content_type": "image/png",
-  "created_at": "2026-06-25T00:10:19Z",
-  "original_filename": "logo-tajalmoluk.png",
+  "version": 1,
+  "asset_id": "8a480b10-0c8e-47b8-b89b-bde1e2cd54c8",
   "project_id": "4878ae39-10e2-4d14-b8ba-c4bbe7950027",
-  "r2_key": "a/v1/4878ae39-10e2-4d14-b8ba-c4bbe7950027/f7f87699-eed0-4ee2-85e0-ac775ddf75d5/logo-tajalmoluk.png",
-  "size": 761964,
-  "url": "/__l5e/assets-v1/f7f87699-eed0-4ee2-85e0-ac775ddf75d5/logo-tajalmoluk.png",
-  "version": 1
+  "url": "/__l5e/assets-v1/8a480b10-0c8e-47b8-b89b-bde1e2cd54c8/zain-logo.png",
+  "r2_key": "a/v1/4878ae39-10e2-4d14-b8ba-c4bbe7950027/8a480b10-0c8e-47b8-b89b-bde1e2cd54c8/zain-logo.png",
+  "original_filename": "zain-logo.png",
+  "size": 2317767,
+  "content_type": "image/png",
+  "created_at": "2026-07-10T03:36:26Z"
 }

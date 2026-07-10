@@ -56,7 +56,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "متجر زين" },
       { name: "description", content: "ppf_نانو سيراميك _عازل حراري _تلميع_تنجيد _اكسيوارات\nلجميع  منتجات وخدمات السيارات" },
-      { name: "author", content: "تاج الملوك" },
+      { name: "author", content: "زين" },
       { property: "og:title", content: "متجر زين" },
       { property: "og:description", content: "ppf_نانو سيراميك _عازل حراري _تلميع_تنجيد _اكسيوارات\nلجميع  منتجات وخدمات السيارات" },
       { property: "og:type", content: "website" },
