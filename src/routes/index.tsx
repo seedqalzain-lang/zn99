@@ -50,29 +50,8 @@ function HomePage() {
 
   return (
     <Shell>
-      {/* HERO */}
-      <section className="relative w-full bg-black overflow-hidden">
-        <img
-          src={heroImage}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-          fetchPriority="high"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
-        <div className="relative max-w-7xl mx-auto px-4 py-20 md:py-32 text-center text-white">
-          <img src={logoAsset.url} alt="زين لزينة السيارات" className="mx-auto h-32 md:h-48 w-auto object-contain drop-shadow-2xl" />
-          <p className="mt-4 text-base md:text-2xl font-semibold text-[var(--color-gold)]">للعناية وزينة السيارات</p>
-          <p className="mt-2 text-sm md:text-base text-gray-200 max-w-xl mx-auto">
-            متجر فاخر وخدمات احترافية — كل ما تحتاجه سيارتك في مكان واحد.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/shop" className="btn-gold">تصفح المتجر <ArrowLeft className="w-4 h-4" /></Link>
-            <Link to="/services" className="btn-outline !bg-white/10 !text-white !border-white/30 hover:!bg-white/20">
-              خدماتنا
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* HERO SLIDER */}
+      <HeroSlider />
 
       {/* CATEGORY CIRCLES */}
       <section className="max-w-7xl mx-auto px-4 py-8 md:py-10">
