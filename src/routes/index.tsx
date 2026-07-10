@@ -9,8 +9,6 @@ import { ProductCard } from "@/components/shop/ProductCard";
 import { FeaturedSlider } from "@/components/home/FeaturedSlider";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { getCategories, getProducts, getPackages, getFeaturedProducts } from "@/lib/catalog.functions";
-import { heroImage } from "@/lib/asset-map";
-import logoAsset from "@/assets/logo-tajalmoluk.png.asset.json";
 
 const iconMap: Record<string, LucideIcon> = {
   Zap, Sparkles, Droplets, Wind, Sticker, Cog, Palette,
