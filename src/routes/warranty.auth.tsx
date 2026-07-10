@@ -5,9 +5,10 @@ import { useWarrantyAuth } from "@/lib/warranty-auth";
 import { Mail, Phone, Lock, User, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/warranty/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    next: typeof s.next === "string" && s.next.startsWith("/") ? s.next : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { next?: string } => {
+    const n = s.next;
+    return typeof n === "string" && n.startsWith("/") && !n.startsWith("//") ? { next: n } : {};
+  },
   component: AuthPage,
 });
 
