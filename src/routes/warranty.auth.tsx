@@ -5,13 +5,23 @@ import { useWarrantyAuth } from "@/lib/warranty-auth";
 import { Mail, Phone, Lock, User, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/warranty/auth")({
+  validateSearch: (s: Record<string, unknown>): { next?: string } => {
+    const n = s.next;
+    return typeof n === "string" && n.startsWith("/") && !n.startsWith("//") ? { next: n } : {};
+  },
   component: AuthPage,
 });
+
+function safeNext(next: string | undefined): string {
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : "/warranty/dashboard";
+}
 
 type Mode = "signin" | "signup" | "reset";
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const dest = safeNext(next);
   const { user, loading, refresh } = useWarrantyAuth();
   const [mode, setMode] = useState<Mode>("signin");
   const [identifier, setIdentifier] = useState("");
@@ -22,8 +32,11 @@ function AuthPage() {
   const [msg, setMsg] = useState<{ t: "err" | "ok"; m: string } | null>(null);
 
   useEffect(() => {
-    if (!loading && user) navigate({ to: "/warranty/dashboard" });
-  }, [user, loading, navigate]);
+    if (!loading && user) {
+      if (dest.startsWith("/")) window.location.href = dest;
+      else navigate({ to: "/warranty/dashboard" });
+    }
+  }, [user, loading, navigate, dest]);
 
   const emailFrom = (id: string) => {
     const v = id.trim();

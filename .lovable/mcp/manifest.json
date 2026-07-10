@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://ouatsvudnhnejpbfksho.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "taj-al-moluk-mcp",
+      "version": "0.1.0",
+      "title": "Taj Al Moluk Warranty MCP"
+    },
+    "tools": [
+      {
+        "name": "list_my_warranties",
+        "title": "List my warranties",
+        "description": "Return the warranties belonging to the signed-in customer (Taj Al Moluk).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "verify_warranty",
+        "title": "Verify warranty",
+        "description": "Look up a Taj Al Moluk warranty by its warranty number and return its public status details.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "warranty_number": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 64,
+              "description": "The warranty number, e.g. TM-2025-000123"
+            }
+          },
+          "required": [
+            "warranty_number"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
