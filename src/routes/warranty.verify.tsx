@@ -11,8 +11,8 @@ export const Route = createFileRoute("/warranty/verify")({
   component: VerifyPage,
   head: () => ({
     meta: [
-      { title: "التحقق من الضمان — تاج الملوك" },
-      { name: "description", content: "تحقق من صحة شهادة ضمان تاج الملوك بمسح رمز QR أو إدخال رقم الضمان." },
+      { title: "التحقق من الضمان — زين" },
+      { name: "description", content: "تحقق من صحة شهادة ضمان زين بمسح رمز QR أو إدخال رقم الضمان." },
     ],
   }),
 });
@@ -83,7 +83,7 @@ function VerifyPage() {
         <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 border-2 border-red-200 dark:border-red-900/50 text-center print:hidden">
           <ShieldX className="w-20 h-20 mx-auto text-red-500 mb-3" />
           <h3 className="text-xl font-bold text-red-700 dark:text-red-400">لا يوجد ضمان بهذا الرقم</h3>
-          <p className="text-sm text-slate-500 mt-1">تأكد من الرقم أو تواصل مع تاج الملوك.</p>
+          <p className="text-sm text-slate-500 mt-1">تأكد من الرقم أو تواصل مع زين.</p>
         </div>
       )}
 
@@ -98,9 +98,9 @@ function VerifyPage() {
           <div className="max-w-3xl mx-auto bg-white text-slate-900 rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-500 print:shadow-none print:border-2">
             <div className="bg-gradient-to-l from-amber-500 to-yellow-500 text-white p-6 flex items-center justify-between flex-wrap gap-3">
               <div className="flex items-center gap-3">
-                <img src={logoAsset.url} alt="تاج الملوك" className="h-16 w-auto bg-white rounded-lg p-1" />
+                <img src={logoAsset.url} alt="زين" className="h-16 w-auto bg-white rounded-lg p-1" />
                 <div>
-                  <h1 className="text-2xl font-black">تاج الملوك</h1>
+                  <h1 className="text-2xl font-black">زين</h1>
                   <p className="text-sm opacity-90">شهادة ضمان رسمية</p>
                 </div>
               </div>
@@ -139,7 +139,7 @@ function VerifyPage() {
             </div>
 
             <div className="bg-slate-50 p-4 text-center text-xs text-slate-600 border-t border-slate-200">
-              هذه الشهادة صادرة عن مؤسسة تاج الملوك للعناية وزينة السيارات - صنعاء، اليمن. لأي استفسار: 782222919
+              هذه الشهادة صادرة عن مؤسسة زين للعناية وزينة السيارات - صنعاء، اليمن. لأي استفسار: 782222919
             </div>
           </div>
         </>

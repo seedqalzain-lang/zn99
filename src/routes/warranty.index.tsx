@@ -13,7 +13,7 @@ function WarrantyHome() {
     <div className="space-y-8">
       <section className="text-center py-10 rounded-2xl bg-gradient-to-l from-amber-500 via-amber-400 to-yellow-500 text-white shadow-lg">
         <ShieldCheck className="w-16 h-16 mx-auto mb-3" />
-        <h1 className="text-3xl md:text-4xl font-bold mb-2">نظام ضمانات تاج الملوك</h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-2">نظام ضمانات زين</h1>
         <p className="text-white/90 max-w-2xl mx-auto px-4">
           فعّل ضمانك، اطبع شهادتك الرقمية، وتحقّق من صحة الضمان في أي وقت.
         </p>

@@ -2,14 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import {
   Zap, Sparkles, Droplets, Wind, Sticker, Cog, Palette,
-  ShieldCheck, Truck, Star, ArrowLeft, type LucideIcon,
+  ShieldCheck, Truck, Star, type LucideIcon,
 } from "lucide-react";
 import { Shell } from "@/components/layout/Shell";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { FeaturedSlider } from "@/components/home/FeaturedSlider";
+import { HeroSlider } from "@/components/home/HeroSlider";
 import { getCategories, getProducts, getPackages, getFeaturedProducts } from "@/lib/catalog.functions";
-import { heroImage } from "@/lib/asset-map";
-import logoAsset from "@/assets/logo-tajalmoluk.png.asset.json";
 
 const iconMap: Record<string, LucideIcon> = {
   Zap, Sparkles, Droplets, Wind, Sticker, Cog, Palette,
@@ -23,11 +22,11 @@ const featuredQO = queryOptions({ queryKey: ["featured-products"], queryFn: () =
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "متجر زين" },
-      { name: "description", content: "ppf_نانو سيراميك _عازل حراري _تلميع_تنجيد _اكسيوارات\nلجميع  منتجات وخدمات السيارات" },
-      { property: "og:title", content: "متجر زين" },
-      { property: "og:description", content: "ppf_نانو سيراميك _عازل حراري _تلميع_تنجيد _اكسيوارات\nلجميع  منتجات وخدمات السيارات" },
-      { property: "og:url", content: "https://tajalmoluk.lovable.app/" },
+      { title: "ZAIN — زين أصل الحماية" },
+      { name: "description", content: "زين أصل الحماية — نانو سيراميك، PPF، عزل حراري، تنجيد وإكسسوارات فاخرة لسيارتك." },
+      { property: "og:title", content: "ZAIN — زين أصل الحماية" },
+      { property: "og:description", content: "زين أصل الحماية — نانو سيراميك، PPF، عزل حراري، تنجيد وإكسسوارات فاخرة." },
+      { property: "og:url", content: "https://zn99.lovable.app/" },
       { property: "og:type", content: "website" },
     ],
   }),
@@ -49,29 +48,8 @@ function HomePage() {
 
   return (
     <Shell>
-      {/* HERO */}
-      <section className="relative w-full bg-black overflow-hidden">
-        <img
-          src={heroImage}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-          fetchPriority="high"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
-        <div className="relative max-w-7xl mx-auto px-4 py-20 md:py-32 text-center text-white">
-          <img src={logoAsset.url} alt="تاج الملوك لزينة السيارات" className="mx-auto h-32 md:h-48 w-auto object-contain drop-shadow-2xl" />
-          <p className="mt-4 text-base md:text-2xl font-semibold text-[var(--color-gold)]">للعناية وزينة السيارات</p>
-          <p className="mt-2 text-sm md:text-base text-gray-200 max-w-xl mx-auto">
-            متجر فاخر وخدمات احترافية — كل ما تحتاجه سيارتك في مكان واحد.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/shop" className="btn-gold">تصفح المتجر <ArrowLeft className="w-4 h-4" /></Link>
-            <Link to="/services" className="btn-outline !bg-white/10 !text-white !border-white/30 hover:!bg-white/20">
-              خدماتنا
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* HERO SLIDER */}
+      <HeroSlider />
 
       {/* CATEGORY CIRCLES */}
       <section className="max-w-7xl mx-auto px-4 py-8 md:py-10">

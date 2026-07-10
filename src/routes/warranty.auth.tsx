@@ -128,7 +128,7 @@ function AuthPage() {
         </form>
 
         <p className="text-xs text-slate-500 mt-4 text-center">
-          بالمتابعة أنت توافق على شروط استخدام تاج الملوك.
+          بالمتابعة أنت توافق على شروط استخدام زين.
         </p>
       </div>
     </div>

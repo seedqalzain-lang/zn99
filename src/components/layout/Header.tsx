@@ -21,8 +21,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full bg-white border-b border-[var(--color-hairline)]">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-        <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="تاج الملوك">
-          <img src={logoAsset.url} alt="تاج الملوك لزينة السيارات" className="h-12 md:h-14 w-auto object-contain" />
+        <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="زين">
+          <img src={logoAsset.url} alt="زين لزينة السيارات" className="h-12 md:h-14 w-auto object-contain" />
         </Link>
 
         <div className="flex-1 hidden md:flex">

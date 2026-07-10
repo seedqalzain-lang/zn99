@@ -5,10 +5,10 @@ import { Target, Heart, Users } from "lucide-react";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "من نحن — تاج الملوك" },
-      { name: "description", content: "تاج الملوك - مركز متكامل للعناية بالسيارات في صنعاء يقدم خدمات احترافية وقطع وإكسسوارات أصلية." },
-      { property: "og:title", content: "من نحن — تاج الملوك" },
-      { property: "og:description", content: "تاج الملوك - مركز متكامل للعناية بالسيارات في صنعاء يقدم خدمات احترافية وقطع وإكسسوارات أصلية." },
+      { title: "من نحن — زين" },
+      { name: "description", content: "زين - مركز متكامل للعناية بالسيارات في صنعاء يقدم خدمات احترافية وقطع وإكسسوارات أصلية." },
+      { property: "og:title", content: "من نحن — زين" },
+      { property: "og:description", content: "زين - مركز متكامل للعناية بالسيارات في صنعاء يقدم خدمات احترافية وقطع وإكسسوارات أصلية." },
       { property: "og:url", content: "https://tajalmoluk.lovable.app/about" },
       { property: "og:type", content: "website" },
     ],
@@ -22,7 +22,7 @@ function AboutPage() {
       <div className="max-w-4xl mx-auto px-4 py-10">
         <h1 className="text-3xl md:text-4xl font-black">من نحن</h1>
         <p className="text-[var(--color-ink-soft)] mt-4 leading-loose">
-          <span className="font-bold text-[var(--color-gold)]">تاج الملوك</span> للعناية وزينة السيارات — وجهتك الملكية في صنعاء لتجربة فاخرة تجمع بين متجر إلكتروني واسع وخدمات احترافية تنفذها أيدي خبراء. هدفنا أن تحصل سيارتك على أفضل العناية في مكان واحد، بجودة عالمية وأسعار تنافسية.
+          <span className="font-bold text-[var(--color-gold)]">زين</span> للعناية وزينة السيارات — وجهتك الملكية في صنعاء لتجربة فاخرة تجمع بين متجر إلكتروني واسع وخدمات احترافية تنفذها أيدي خبراء. هدفنا أن تحصل سيارتك على أفضل العناية في مكان واحد، بجودة عالمية وأسعار تنافسية.
         </p>
         <p className="text-[var(--color-ink-soft)] mt-4 leading-loose">
           من حماية الطلاء بأفلام PPF والنانو سيراميك، إلى التنجيد الفاخر، وتطوير الكشافات، والسمكرة والرش، وقطع الغيار الأصلية، والاكسسوارات المميزة — كل ذلك تحت سقف واحد.

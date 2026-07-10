@@ -12,10 +12,10 @@ import { Copy, Check, ShoppingBag } from "lucide-react";
 export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
-      { title: "إتمام الطلب — تاج الملوك" },
-      { name: "description", content: "أكمل بيانات الطلب والدفع عبر المحافظ الإلكترونية لـ تاج الملوك." },
-      { property: "og:title", content: "إتمام الطلب — تاج الملوك" },
-      { property: "og:description", content: "أكمل بيانات الطلب والدفع عبر المحافظ الإلكترونية لـ تاج الملوك." },
+      { title: "إتمام الطلب — زين" },
+      { name: "description", content: "أكمل بيانات الطلب والدفع عبر المحافظ الإلكترونية لـ زين." },
+      { property: "og:title", content: "إتمام الطلب — زين" },
+      { property: "og:description", content: "أكمل بيانات الطلب والدفع عبر المحافظ الإلكترونية لـ زين." },
       { property: "og:url", content: "https://tajalmoluk.lovable.app/checkout" },
       { property: "og:type", content: "website" },
     ],
@@ -84,7 +84,7 @@ function CheckoutPage() {
       });
 
       const lines = [
-        "🛒 *طلب جديد من تاج الملوك*",
+        "🛒 *طلب جديد من زين*",
         `👤 الاسم: ${name}`,
         `📱 الهاتف: ${phone}`,
         address ? `📍 العنوان: ${address}` : "",
@@ -116,7 +116,7 @@ function CheckoutPage() {
     <Shell>
       <div className="max-w-3xl mx-auto px-4 py-8">
         <h1 className="text-2xl md:text-3xl font-black">إتمام الطلب</h1>
-        <p className="text-[var(--color-ink-soft)] mt-1 text-sm">املأ البيانات واختر المحفظة، سيتم إرسال الطلب لإدارة تاج الملوك عبر واتساب.</p>
+        <p className="text-[var(--color-ink-soft)] mt-1 text-sm">املأ البيانات واختر المحفظة، سيتم إرسال الطلب لإدارة زين عبر واتساب.</p>
 
         <form onSubmit={submit} className="mt-6 space-y-6">
           <div className="card-clean p-5 space-y-3">
