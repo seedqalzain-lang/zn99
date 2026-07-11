@@ -118,7 +118,7 @@ export const adminUpdateCustomerReview = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     verifyAdmin(data.password);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const patch: Record<string, boolean> = {};
+    const patch: { is_approved?: boolean; is_featured?: boolean } = {};
     if (typeof data.is_approved === "boolean") patch.is_approved = data.is_approved;
     if (typeof data.is_featured === "boolean") patch.is_featured = data.is_featured;
     const { error } = await supabaseAdmin.from("customer_reviews").update(patch).eq("id", data.id);
