@@ -29,7 +29,7 @@ export const Route = createFileRoute("/admin")({
 });
 
 type Tab =
-  | "orders" | "products" | "categories" | "services" | "packages" | "wallets" | "content" | "reviews"
+  | "orders" | "products" | "categories" | "services" | "packages" | "wallets" | "content" | "reviews" | "customer-reviews"
   | "w-overview" | "w-warranties" | "w-customers" | "w-brands" | "w-films" | "w-branches" | "w-users";
 
 function AdminPage() {
