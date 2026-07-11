@@ -141,6 +141,9 @@ function HomePage() {
           </div>
         ))}
       </section>
+
+      {/* CUSTOMER REVIEWS */}
+      <CustomerReviewsSection />
     </Shell>
   );
 }
