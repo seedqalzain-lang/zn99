@@ -8,6 +8,7 @@ import { Shell } from "@/components/layout/Shell";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { FeaturedSlider } from "@/components/home/FeaturedSlider";
 import { HeroSlider } from "@/components/home/HeroSlider";
+import { CustomerReviewsSection } from "@/components/home/CustomerReviewsSection";
 import { getCategories, getProducts, getPackages, getFeaturedProducts } from "@/lib/catalog.functions";
 
 const iconMap: Record<string, LucideIcon> = {
