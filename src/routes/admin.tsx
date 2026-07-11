@@ -13,6 +13,9 @@ import {
   deleteOrder, listAllReviews, deleteReview,
 } from "@/lib/admin.functions";
 import {
+  adminListCustomerReviews, adminUpdateCustomerReview, adminDeleteCustomerReview,
+} from "@/lib/reviews.functions";
+import {
   WarrantyOverview, WarrantiesTab, WarrantyCustomersTab, WarrantySimpleCrud, WarrantyUsersTab,
 } from "@/components/warranty-admin-panels";
 
