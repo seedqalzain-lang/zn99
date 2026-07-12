@@ -41,6 +41,9 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-1 mr-auto md:mr-0">
+          <Link to="/centers" className="hidden md:inline-flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold text-[var(--color-ink)] hover:bg-[var(--color-gold-soft)]" aria-label="المراكز المعتمدة">
+            <MapPin className="w-4 h-4" /> <span>المراكز</span>
+          </Link>
           <Link to="/warranty" className="hidden sm:inline-flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold bg-amber-500 text-white hover:bg-amber-600" aria-label="الضمانات">
             <ShieldCheck className="w-4 h-4" /> <span className="hidden md:inline">الضمانات</span>
           </Link>
