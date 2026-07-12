@@ -247,6 +247,57 @@ export type Database = {
           },
         ]
       }
+      installation_centers: {
+        Row: {
+          address: string | null
+          city: string
+          created_at: string
+          google_maps_url: string | null
+          id: string
+          is_active: boolean
+          is_approved: boolean
+          logo_url: string | null
+          name: string
+          phone: string | null
+          services: string[]
+          sort_order: number
+          updated_at: string
+          whatsapp: string | null
+        }
+        Insert: {
+          address?: string | null
+          city: string
+          created_at?: string
+          google_maps_url?: string | null
+          id?: string
+          is_active?: boolean
+          is_approved?: boolean
+          logo_url?: string | null
+          name: string
+          phone?: string | null
+          services?: string[]
+          sort_order?: number
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string
+          created_at?: string
+          google_maps_url?: string | null
+          id?: string
+          is_active?: boolean
+          is_approved?: boolean
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          services?: string[]
+          sort_order?: number
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           address: string | null
