@@ -17,10 +17,9 @@ export const Route = createFileRoute("/centers/$id")({
     ],
   }),
   loader: async ({ params, context }) => {
-    const fetchCenter = useServerFn(getPublicCenterById);
     await context.queryClient.ensureQueryData({
       queryKey: ["public-center", params.id],
-      queryFn: () => fetchCenter({ data: { id: params.id } }),
+      queryFn: () => getPublicCenterById({ data: { id: params.id } }),
     });
   },
   errorComponent: CenterError,
