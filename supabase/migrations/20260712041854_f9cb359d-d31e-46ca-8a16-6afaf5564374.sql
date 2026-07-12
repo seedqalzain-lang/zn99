@@ -1,0 +1,1 @@
+ALTER TABLE public.installation_centers ADD COLUMN IF NOT EXISTS images text[] DEFAULT '{}';
