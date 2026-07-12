@@ -8,7 +8,7 @@ export const listPublicCenters = createServerFn({ method: "GET" }).handler(async
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin
     .from("installation_centers")
-    .select("id, name, city, address, phone, whatsapp, google_maps_url, logo_url, services, sort_order")
+    .select("id, name, city, address, phone, whatsapp, google_maps_url, logo_url, images, services, sort_order")
     .eq("is_approved", true)
     .eq("is_active", true)
     .order("sort_order", { ascending: true })
@@ -16,6 +16,21 @@ export const listPublicCenters = createServerFn({ method: "GET" }).handler(async
   if (error) { console.error("[centers] list error:", error); throw new Error("تعذّر تحميل المراكز"); }
   return data ?? [];
 });
+
+export const getPublicCenterById = createServerFn({ method: "GET" })
+  .inputValidator((d) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await supabaseAdmin
+      .from("installation_centers")
+      .select("id, name, city, address, phone, whatsapp, google_maps_url, logo_url, images, services, sort_order")
+      .eq("id", data.id)
+      .eq("is_approved", true)
+      .eq("is_active", true)
+      .single();
+    if (error || !row) throw new Error("المركز غير موجود أو غير معتمد");
+    return row;
+  });
 
 /* ============ Admin ============ */
 
