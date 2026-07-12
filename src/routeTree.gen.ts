@@ -25,6 +25,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WarrantyIndexRouteImport } from './routes/warranty.index'
+import { Route as CentersIndexRouteImport } from './routes/centers.index'
 import { Route as WarrantyVerifyRouteImport } from './routes/warranty.verify'
 import { Route as WarrantyDashboardRouteImport } from './routes/warranty.dashboard'
 import { Route as WarrantyCarsRouteImport } from './routes/warranty.cars'
@@ -119,6 +120,11 @@ const WarrantyIndexRoute = WarrantyIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => WarrantyRoute,
+} as any)
+const CentersIndexRoute = CentersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CentersRoute,
 } as any)
 const WarrantyVerifyRoute = WarrantyVerifyRouteImport.update({
   id: '/verify',
@@ -221,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/warranty/cars': typeof WarrantyCarsRoute
   '/warranty/dashboard': typeof WarrantyDashboardRoute
   '/warranty/verify': typeof WarrantyVerifyRoute
+  '/centers/': typeof CentersIndexRoute
   '/warranty/': typeof WarrantyIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -231,7 +238,6 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/cart': typeof CartRoute
-  '/centers': typeof CentersRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/mcp': typeof McpRoute
@@ -252,6 +258,7 @@ export interface FileRoutesByTo {
   '/warranty/cars': typeof WarrantyCarsRoute
   '/warranty/dashboard': typeof WarrantyDashboardRoute
   '/warranty/verify': typeof WarrantyVerifyRoute
+  '/centers': typeof CentersIndexRoute
   '/warranty': typeof WarrantyIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -285,6 +292,7 @@ export interface FileRoutesById {
   '/warranty/cars': typeof WarrantyCarsRoute
   '/warranty/dashboard': typeof WarrantyDashboardRoute
   '/warranty/verify': typeof WarrantyVerifyRoute
+  '/centers/': typeof CentersIndexRoute
   '/warranty/': typeof WarrantyIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -319,6 +327,7 @@ export interface FileRouteTypes {
     | '/warranty/cars'
     | '/warranty/dashboard'
     | '/warranty/verify'
+    | '/centers/'
     | '/warranty/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
@@ -329,7 +338,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/cart'
-    | '/centers'
     | '/checkout'
     | '/contact'
     | '/mcp'
@@ -350,6 +358,7 @@ export interface FileRouteTypes {
     | '/warranty/cars'
     | '/warranty/dashboard'
     | '/warranty/verify'
+    | '/centers'
     | '/warranty'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
@@ -382,6 +391,7 @@ export interface FileRouteTypes {
     | '/warranty/cars'
     | '/warranty/dashboard'
     | '/warranty/verify'
+    | '/centers/'
     | '/warranty/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
@@ -525,6 +535,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WarrantyIndexRouteImport
       parentRoute: typeof WarrantyRoute
     }
+    '/centers/': {
+      id: '/centers/'
+      path: '/'
+      fullPath: '/centers/'
+      preLoaderRoute: typeof CentersIndexRouteImport
+      parentRoute: typeof CentersRoute
+    }
     '/warranty/verify': {
       id: '/warranty/verify'
       path: '/verify'
@@ -628,10 +645,12 @@ declare module '@tanstack/react-router' {
 
 interface CentersRouteChildren {
   CentersIdRoute: typeof CentersIdRoute
+  CentersIndexRoute: typeof CentersIndexRoute
 }
 
 const CentersRouteChildren: CentersRouteChildren = {
   CentersIdRoute: CentersIdRoute,
+  CentersIndexRoute: CentersIndexRoute,
 }
 
 const CentersRouteWithChildren =
