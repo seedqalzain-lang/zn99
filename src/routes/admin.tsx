@@ -954,7 +954,7 @@ function CustomerReviewsPanel() {
 type CenterRow = {
   id: string; name: string; city: string; address: string | null;
   phone: string | null; whatsapp: string | null; google_maps_url: string | null;
-  logo_url: string | null; services: string[]; is_active: boolean; is_approved: boolean; sort_order: number;
+  logo_url: string | null; images: string[]; services: string[]; is_active: boolean; is_approved: boolean; sort_order: number;
 };
 
 function InstallationCentersPanel() {
