@@ -74,6 +74,13 @@ function CentersPage() {
                 )}
 
                 <div className="flex gap-2 mt-4 pt-4 border-t border-[var(--color-hairline)]">
+                  <Link
+                    to="/centers/$id"
+                    params={{ id: c.id }}
+                    className="flex-1 inline-flex items-center justify-center gap-1 bg-[var(--color-gold)] hover:opacity-90 text-[var(--color-ink)] px-3 py-2 rounded-lg text-xs font-bold"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" /> التفاصيل
+                  </Link>
                   {c.phone && (
                     <a href={`tel:${c.phone}`} className="flex-1 inline-flex items-center justify-center gap-1 bg-[var(--color-surface)] hover:bg-[var(--color-gold-soft)] text-[var(--color-ink)] px-3 py-2 rounded-lg text-xs font-bold" aria-label="اتصال">
                       <Phone className="w-3.5 h-3.5" /> اتصال
@@ -83,12 +90,6 @@ function CentersPage() {
                     <a href={`https://wa.me/${c.whatsapp.replace(/[^\d]/g, "")}`} target="_blank" rel="noreferrer"
                       className="flex-1 inline-flex items-center justify-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-xs font-bold">
                       <MessageCircle className="w-3.5 h-3.5" /> واتساب
-                    </a>
-                  )}
-                  {c.google_maps_url && (
-                    <a href={c.google_maps_url} target="_blank" rel="noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-bold">
-                      <MapPin className="w-3.5 h-3.5" /> الموقع
                     </a>
                   )}
                 </div>
