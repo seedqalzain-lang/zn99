@@ -33,6 +33,7 @@ import { Route as WarrantyAdminRouteImport } from './routes/warranty.admin'
 import { Route as WarrantyActivateRouteImport } from './routes/warranty.activate'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
+import { Route as CentersIdRouteImport } from './routes/centers.$id'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as WarrantyCertificateIdRouteImport } from './routes/warranty.certificate.$id'
@@ -159,6 +160,11 @@ const ProductIdRoute = ProductIdRouteImport.update({
   path: '/product/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CentersIdRoute = CentersIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CentersRoute,
+} as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
     id: '/.well-known/oauth-protected-resource',
@@ -193,7 +199,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/cart': typeof CartRoute
-  '/centers': typeof CentersRoute
+  '/centers': typeof CentersRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/mcp': typeof McpRoute
@@ -206,6 +212,7 @@ export interface FileRoutesByFullPath {
   '/warranty': typeof WarrantyRouteWithChildren
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/centers/$id': typeof CentersIdRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/warranty/activate': typeof WarrantyActivateRoute
@@ -224,7 +231,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/cart': typeof CartRoute
-  '/centers': typeof CentersRoute
+  '/centers': typeof CentersRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/mcp': typeof McpRoute
@@ -236,6 +243,7 @@ export interface FileRoutesByTo {
   '/vip': typeof VipRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/centers/$id': typeof CentersIdRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/warranty/activate': typeof WarrantyActivateRoute
@@ -255,7 +263,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/cart': typeof CartRoute
-  '/centers': typeof CentersRoute
+  '/centers': typeof CentersRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/mcp': typeof McpRoute
@@ -268,6 +276,7 @@ export interface FileRoutesById {
   '/warranty': typeof WarrantyRouteWithChildren
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/centers/$id': typeof CentersIdRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/warranty/activate': typeof WarrantyActivateRoute
@@ -301,6 +310,7 @@ export interface FileRouteTypes {
     | '/warranty'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/centers/$id'
     | '/product/$id'
     | '/services/$slug'
     | '/warranty/activate'
@@ -331,6 +341,7 @@ export interface FileRouteTypes {
     | '/vip'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/centers/$id'
     | '/product/$id'
     | '/services/$slug'
     | '/warranty/activate'
@@ -362,6 +373,7 @@ export interface FileRouteTypes {
     | '/warranty'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/centers/$id'
     | '/product/$id'
     | '/services/$slug'
     | '/warranty/activate'
@@ -381,7 +393,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRoute
   CartRoute: typeof CartRoute
-  CentersRoute: typeof CentersRoute
+  CentersRoute: typeof CentersRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   McpRoute: typeof McpRoute
@@ -569,6 +581,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/centers/$id': {
+      id: '/centers/$id'
+      path: '/$id'
+      fullPath: '/centers/$id'
+      preLoaderRoute: typeof CentersIdRouteImport
+      parentRoute: typeof CentersRoute
+    }
     '/.well-known/oauth-protected-resource': {
       id: '/.well-known/oauth-protected-resource'
       path: '/.well-known/oauth-protected-resource'
@@ -606,6 +625,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface CentersRouteChildren {
+  CentersIdRoute: typeof CentersIdRoute
+}
+
+const CentersRouteChildren: CentersRouteChildren = {
+  CentersIdRoute: CentersIdRoute,
+}
+
+const CentersRouteWithChildren =
+  CentersRoute._addFileChildren(CentersRouteChildren)
 
 interface ServicesRouteChildren {
   ServicesSlugRoute: typeof ServicesSlugRoute
@@ -650,7 +680,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdminRoute: AdminRoute,
   CartRoute: CartRoute,
-  CentersRoute: CentersRoute,
+  CentersRoute: CentersRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   McpRoute: McpRoute,
