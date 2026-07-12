@@ -19,6 +19,7 @@ import { Route as OffersRouteImport } from './routes/offers'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CentersRouteImport } from './routes/centers'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
@@ -86,6 +87,11 @@ const ContactRoute = ContactRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CentersRoute = CentersRouteImport.update({
+  id: '/centers',
+  path: '/centers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/cart': typeof CartRoute
+  '/centers': typeof CentersRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/mcp': typeof McpRoute
@@ -217,6 +224,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/cart': typeof CartRoute
+  '/centers': typeof CentersRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/mcp': typeof McpRoute
@@ -247,6 +255,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/cart': typeof CartRoute
+  '/centers': typeof CentersRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/mcp': typeof McpRoute
@@ -279,6 +288,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/cart'
+    | '/centers'
     | '/checkout'
     | '/contact'
     | '/mcp'
@@ -309,6 +319,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/cart'
+    | '/centers'
     | '/checkout'
     | '/contact'
     | '/mcp'
@@ -338,6 +349,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/cart'
+    | '/centers'
     | '/checkout'
     | '/contact'
     | '/mcp'
@@ -369,6 +381,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRoute
   CartRoute: typeof CartRoute
+  CentersRoute: typeof CentersRoute
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   McpRoute: typeof McpRoute
@@ -456,6 +469,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/centers': {
+      id: '/centers'
+      path: '/centers'
+      fullPath: '/centers'
+      preLoaderRoute: typeof CentersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -630,6 +650,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdminRoute: AdminRoute,
   CartRoute: CartRoute,
+  CentersRoute: CentersRoute,
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   McpRoute: McpRoute,
