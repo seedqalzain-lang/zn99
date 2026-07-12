@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { Shell } from "@/components/layout/Shell";
-import { MapPin, Phone, MessageCircle, ShieldCheck, Loader2 } from "lucide-react";
+import { MapPin, Phone, MessageCircle, ShieldCheck, Loader2, ArrowLeft } from "lucide-react";
 import { listPublicCenters } from "@/lib/installation-centers.functions";
 
 export const Route = createFileRoute("/centers")({
