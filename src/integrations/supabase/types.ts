@@ -254,6 +254,7 @@ export type Database = {
           created_at: string
           google_maps_url: string | null
           id: string
+          images: string[] | null
           is_active: boolean
           is_approved: boolean
           logo_url: string | null
@@ -270,6 +271,7 @@ export type Database = {
           created_at?: string
           google_maps_url?: string | null
           id?: string
+          images?: string[] | null
           is_active?: boolean
           is_approved?: boolean
           logo_url?: string | null
@@ -286,6 +288,7 @@ export type Database = {
           created_at?: string
           google_maps_url?: string | null
           id?: string
+          images?: string[] | null
           is_active?: boolean
           is_approved?: boolean
           logo_url?: string | null

@@ -954,7 +954,7 @@ function CustomerReviewsPanel() {
 type CenterRow = {
   id: string; name: string; city: string; address: string | null;
   phone: string | null; whatsapp: string | null; google_maps_url: string | null;
-  logo_url: string | null; services: string[]; is_active: boolean; is_approved: boolean; sort_order: number;
+  logo_url: string | null; images: string[]; services: string[]; is_active: boolean; is_approved: boolean; sort_order: number;
 };
 
 function InstallationCentersPanel() {
@@ -1065,13 +1065,25 @@ function CenterForm({ initial, onSave }: { initial: Partial<CenterRow>; onSave: 
     whatsapp: initial.whatsapp ?? "",
     google_maps_url: initial.google_maps_url ?? "",
     logo_url: initial.logo_url ?? "",
+    images: initial.images ?? [],
     services: (initial.services ?? []).join("، "),
     is_active: initial.is_active ?? true,
     is_approved: initial.is_approved ?? false,
     sort_order: initial.sort_order ?? 0,
   });
   const [busy, setBusy] = useState(false);
+  const [newImageUrl, setNewImageUrl] = useState("");
   const up = <K extends keyof typeof v>(k: K, val: (typeof v)[K]) => setV((p) => ({ ...p, [k]: val }));
+
+  const addImageUrl = () => {
+    const url = newImageUrl.trim();
+    if (!url) return;
+    if (!/^https?:\/\//i.test(url)) { alert("الرجاء إدخال رابط صحيح يبدأ بـ http:// أو https://"); return; }
+    up("images", [...v.images, url]);
+    setNewImageUrl("");
+  };
+
+  const removeImage = (idx: number) => up("images", v.images.filter((_, i) => i !== idx));
 
   return (
     <form onSubmit={async (e) => {
@@ -1085,6 +1097,7 @@ function CenterForm({ initial, onSave }: { initial: Partial<CenterRow>; onSave: 
           whatsapp: v.whatsapp.trim() || null,
           google_maps_url: v.google_maps_url.trim() || null,
           logo_url: v.logo_url.trim() || null,
+          images: v.images.filter(Boolean),
           services: v.services.split(/[,،\n]/).map((s) => s.trim()).filter(Boolean),
           is_active: v.is_active,
           is_approved: v.is_approved,
@@ -1111,6 +1124,35 @@ function CenterForm({ initial, onSave }: { initial: Partial<CenterRow>; onSave: 
           {v.logo_url && <img src={v.logo_url} alt="" className="w-12 h-12 rounded object-cover" />}
         </div>
       </div>
+
+      <div>
+        <span className="text-sm font-bold block mb-1">صور المركز</span>
+        <div className="flex flex-wrap gap-2 mb-2">
+          {v.images.map((src, idx) => (
+            <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-[var(--color-hairline)] bg-[var(--color-surface)]">
+              <img src={src} alt="" className="w-full h-full object-cover" />
+              <button type="button" onClick={() => removeImage(idx)} className="absolute top-0.5 left-0.5 bg-red-600 text-white rounded-full p-0.5">
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="flex gap-2">
+          <input
+            type="url"
+            value={newImageUrl}
+            onChange={(e) => setNewImageUrl(e.target.value)}
+            placeholder="رابط صورة جديدة"
+            className="flex-1 border border-[var(--color-hairline)] rounded-lg px-3 py-2 outline-none focus:border-[var(--color-gold)] text-sm"
+            dir="ltr"
+          />
+          <button type="button" onClick={addImageUrl} className="btn-outline text-xs px-3">إضافة</button>
+        </div>
+        <div className="mt-2">
+          <ImageUploader onUploaded={(u) => up("images", [...v.images, u])} />
+        </div>
+      </div>
+
       <label className="block">
         <span className="text-sm font-bold block mb-1">الخدمات (افصل بفاصلة)</span>
         <input value={v.services} onChange={(e) => up("services", e.target.value)}
