@@ -16,6 +16,9 @@ import {
   adminListCustomerReviews, adminUpdateCustomerReview, adminDeleteCustomerReview,
 } from "@/lib/reviews.functions";
 import {
+  adminListCenters, adminSaveCenter, adminUpdateCenterFlags, adminDeleteCenter,
+} from "@/lib/installation-centers.functions";
+import {
   WarrantyOverview, WarrantiesTab, WarrantyCustomersTab, WarrantySimpleCrud, WarrantyUsersTab,
 } from "@/components/warranty-admin-panels";
 
@@ -29,8 +32,8 @@ export const Route = createFileRoute("/admin")({
 });
 
 type Tab =
-  | "orders" | "products" | "categories" | "services" | "packages" | "wallets" | "content" | "reviews" | "customer-reviews"
-  | "w-overview" | "w-warranties" | "w-customers" | "w-brands" | "w-films" | "w-branches" | "w-users";
+ | "orders" | "products" | "categories" | "services" | "packages" | "wallets" | "content" | "reviews" | "customer-reviews" | "centers"
+ | "w-overview" | "w-warranties" | "w-customers" | "w-brands" | "w-films" | "w-branches" | "w-users";
 
 function AdminPage() {
   const login = useServerFn(adminLogin);
@@ -120,6 +123,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         { id: "wallets", label: "المحافظ" },
         { id: "reviews", label: "تقييمات المنتجات" },
         { id: "customer-reviews", label: "آراء العملاء" },
+        { id: "centers", label: "مراكز التركيب" },
         { id: "content", label: "المحتوى" },
       ],
     },
@@ -178,6 +182,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           {tab === "wallets" && <WalletsPanel />}
           {tab === "reviews" && <ReviewsPanel />}
           {tab === "customer-reviews" && <CustomerReviewsPanel />}
+          {tab === "centers" && <InstallationCentersPanel />}
           {tab === "content" && <ContentPanel />}
           {tab === "w-overview" && <WarrantyOverview />}
           {tab === "w-warranties" && <WarrantiesTab />}
