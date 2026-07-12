@@ -69,6 +69,7 @@ const centerSchema = z.object({
   whatsapp: z.string().trim().max(40).nullable().optional(),
   google_maps_url: z.string().trim().url().max(500).nullable().optional().or(z.literal("").transform(() => null)),
   logo_url: z.string().trim().url().max(500).nullable().optional().or(z.literal("").transform(() => null)),
+  images: z.array(z.string().trim().url().max(500)).max(20).default([]),
   services: z.array(z.string().trim().min(1).max(60)).max(20).default([]),
   is_active: z.boolean().default(true),
   is_approved: z.boolean().default(false),
