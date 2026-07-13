@@ -1,14 +1,33 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import hero1 from "@/assets/hero/hero-1.jpg.asset.json";
 import hero2 from "@/assets/hero/hero-2.png.asset.json";
 import hero3 from "@/assets/hero/hero-3.png.asset.json";
 import hero4 from "@/assets/hero/hero-4.png.asset.json";
+import { listPublicHeroSlides } from "@/lib/hero-slides.functions";
 
-const SLIDES = [hero1, hero2, hero3, hero4];
+type Slide = { key: string; url: string; alt?: string | null };
+const FALLBACK: Slide[] = [hero1, hero2, hero3, hero4].map((s) => ({
+  key: s.asset_id,
+  url: s.url,
+  alt: "",
+}));
 const INTERVAL = 5500;
 
 export function HeroSlider() {
+  const fetchSlides = useServerFn(listPublicHeroSlides);
+  const { data: remote } = useQuery({
+    queryKey: ["hero-slides"],
+    queryFn: () => fetchSlides(),
+    staleTime: 60_000,
+  });
+  const SLIDES: Slide[] =
+    remote && remote.length > 0
+      ? remote.map((s) => ({ key: s.id, url: s.image_url, alt: s.alt_text }))
+      : FALLBACK;
+
   const [i, setI] = useState(0);
   const timer = useRef<number | null>(null);
   const touchStart = useRef<number | null>(null);
@@ -51,7 +70,7 @@ export function HeroSlider() {
       <div className="relative h-[60vh] min-h-[420px] md:h-[78vh] md:min-h-[560px] max-h-[820px]">
         {SLIDES.map((s, idx) => (
           <div
-            key={s.asset_id}
+            key={s.key}
             className={`absolute inset-0 transition-opacity duration-1000 ease-out ${
               idx === i ? "opacity-100" : "opacity-0"
             }`}
@@ -59,7 +78,7 @@ export function HeroSlider() {
           >
             <img
               src={s.url}
-              alt=""
+              alt={s.alt ?? ""}
               className={`w-full h-full object-cover ${
                 idx === i ? "scale-105 transition-transform duration-[6000ms] ease-out" : "scale-100"
               }`}
