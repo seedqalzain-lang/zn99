@@ -70,7 +70,7 @@ export function HeroSlider() {
       <div className="relative h-[60vh] min-h-[420px] md:h-[78vh] md:min-h-[560px] max-h-[820px]">
         {SLIDES.map((s, idx) => (
           <div
-            key={s.asset_id}
+            key={s.key}
             className={`absolute inset-0 transition-opacity duration-1000 ease-out ${
               idx === i ? "opacity-100" : "opacity-0"
             }`}
