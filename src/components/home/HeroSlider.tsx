@@ -28,8 +28,6 @@ export function HeroSlider() {
       ? remote.map((s) => ({ key: s.id, url: s.image_url, alt: s.alt_text }))
       : FALLBACK;
 
-
-export function HeroSlider() {
   const [i, setI] = useState(0);
   const timer = useRef<number | null>(null);
   const touchStart = useRef<number | null>(null);
