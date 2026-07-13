@@ -1,12 +1,33 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import hero1 from "@/assets/hero/hero-1.jpg.asset.json";
 import hero2 from "@/assets/hero/hero-2.png.asset.json";
 import hero3 from "@/assets/hero/hero-3.png.asset.json";
 import hero4 from "@/assets/hero/hero-4.png.asset.json";
+import { listPublicHeroSlides } from "@/lib/hero-slides.functions";
 
-const SLIDES = [hero1, hero2, hero3, hero4];
+type Slide = { key: string; url: string; alt?: string | null };
+const FALLBACK: Slide[] = [hero1, hero2, hero3, hero4].map((s) => ({
+  key: s.asset_id,
+  url: s.url,
+  alt: "",
+}));
 const INTERVAL = 5500;
+
+export function HeroSlider() {
+  const fetchSlides = useServerFn(listPublicHeroSlides);
+  const { data: remote } = useQuery({
+    queryKey: ["hero-slides"],
+    queryFn: () => fetchSlides(),
+    staleTime: 60_000,
+  });
+  const SLIDES: Slide[] =
+    remote && remote.length > 0
+      ? remote.map((s) => ({ key: s.id, url: s.image_url, alt: s.alt_text }))
+      : FALLBACK;
+
 
 export function HeroSlider() {
   const [i, setI] = useState(0);
