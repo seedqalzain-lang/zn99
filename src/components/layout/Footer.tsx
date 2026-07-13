@@ -24,7 +24,7 @@ export function Footer() {
             زين للعناية وزينة السيارات — جودة ملكية وخدمة احترافية في صنعاء.
           </p>
           <p className="text-xs text-[var(--color-ink-soft)] mt-3">
-            المدير العام: <span className="font-semibold text-[var(--color-ink)]">الزبير</span>
+            المدير العام: <span className="font-semibold text-[var(--color-ink)]">صديق الزين</span>
           </p>
         </div>
 
