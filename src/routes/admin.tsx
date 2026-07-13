@@ -188,6 +188,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           {tab === "reviews" && <ReviewsPanel />}
           {tab === "customer-reviews" && <CustomerReviewsPanel />}
           {tab === "centers" && <InstallationCentersPanel />}
+          {tab === "hero" && <HeroSlidesPanel />}
           {tab === "content" && <ContentPanel />}
           {tab === "w-overview" && <WarrantyOverview />}
           {tab === "w-warranties" && <WarrantiesTab />}
