@@ -19,6 +19,10 @@ import {
   adminListCenters, adminSaveCenter, adminUpdateCenterFlags, adminDeleteCenter,
 } from "@/lib/installation-centers.functions";
 import {
+  adminListHeroSlides, adminSaveHeroSlide, adminUpdateHeroSlideFlags,
+  adminDeleteHeroSlide, adminUploadHeroImage,
+} from "@/lib/hero-slides.functions";
+import {
   WarrantyOverview, WarrantiesTab, WarrantyCustomersTab, WarrantySimpleCrud, WarrantyUsersTab,
 } from "@/components/warranty-admin-panels";
 
