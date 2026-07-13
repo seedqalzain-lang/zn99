@@ -52,6 +52,28 @@ function HomePage() {
       {/* HERO SLIDER */}
       <HeroSlider />
 
+      {/* QUICK ACCESS: المراكز + الضمانات */}
+      <section className="max-w-7xl mx-auto px-4 pt-6 md:pt-8">
+        <div className="grid grid-cols-2 gap-3 md:gap-4">
+          <Link
+            to="/centers"
+            className="flex items-center justify-center gap-2 rounded-2xl border-2 border-[var(--color-hairline)] bg-white hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)] text-[var(--color-ink)] font-bold py-3 md:py-4 transition"
+            aria-label="المراكز المعتمدة"
+          >
+            <MapPin className="w-5 h-5 text-[var(--color-gold)]" />
+            <span>المراكز</span>
+          </Link>
+          <Link
+            to="/warranty"
+            className="flex items-center justify-center gap-2 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 md:py-4 transition shadow"
+            aria-label="الضمانات"
+          >
+            <ShieldCheck className="w-5 h-5" />
+            <span>الضمانات</span>
+          </Link>
+        </div>
+      </section>
+
       {/* CATEGORY CIRCLES */}
       <section className="max-w-7xl mx-auto px-4 py-8 md:py-10">
         <div className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar pb-2">
