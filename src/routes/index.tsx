@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import {
   Zap, Sparkles, Droplets, Wind, Sticker, Cog, Palette,
-  ShieldCheck, Truck, Star, type LucideIcon,
+  ShieldCheck, Truck, Star, MapPin, type LucideIcon,
 } from "lucide-react";
 import { Shell } from "@/components/layout/Shell";
 import { ProductCard } from "@/components/shop/ProductCard";
