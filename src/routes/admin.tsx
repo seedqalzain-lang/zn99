@@ -36,7 +36,7 @@ export const Route = createFileRoute("/admin")({
 });
 
 type Tab =
- | "orders" | "products" | "categories" | "services" | "packages" | "wallets" | "content" | "reviews" | "customer-reviews" | "centers"
+ | "orders" | "products" | "categories" | "services" | "packages" | "wallets" | "content" | "reviews" | "customer-reviews" | "centers" | "hero"
  | "w-overview" | "w-warranties" | "w-customers" | "w-brands" | "w-films" | "w-branches" | "w-users";
 
 function AdminPage() {
