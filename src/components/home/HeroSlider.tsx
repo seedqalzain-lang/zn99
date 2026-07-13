@@ -78,7 +78,7 @@ export function HeroSlider() {
           >
             <img
               src={s.url}
-              alt=""
+              alt={s.alt ?? ""}
               className={`w-full h-full object-cover ${
                 idx === i ? "scale-105 transition-transform duration-[6000ms] ease-out" : "scale-100"
               }`}
