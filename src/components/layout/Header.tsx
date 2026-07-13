@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Search, Heart, ShoppingCart, ShieldCheck, MapPin } from "lucide-react";
+import { Search, Heart, ShoppingCart } from "lucide-react";
 
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
