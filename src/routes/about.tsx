@@ -32,7 +32,7 @@ function AboutPage() {
           {[
             { Icon: Target, t: "رسالتنا", d: "تقديم خدمة استثنائية تضع سيارتك في أيدٍ موثوقة." },
             { Icon: Heart, t: "قيمنا", d: "الجودة، الأمانة، والاحترافية في كل تفصيل." },
-            { Icon: Users, t: "فريقنا", d: "بقيادة المدير العام الزبير — فنيون معتمدون." },
+            { Icon: Users, t: "فريقنا", d: "بقيادة المدير العام صديق الزين — فنيون معتمدون." },
           ].map(({ Icon, t, d }) => (
             <div key={t} className="card-clean p-5">
               <Icon className="w-7 h-7 text-[var(--color-gold)]" />
