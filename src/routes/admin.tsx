@@ -128,6 +128,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         { id: "reviews", label: "تقييمات المنتجات" },
         { id: "customer-reviews", label: "آراء العملاء" },
         { id: "centers", label: "مراكز التركيب" },
+        { id: "hero", label: "إدارة السلايدر" },
         { id: "content", label: "المحتوى" },
       ],
     },
