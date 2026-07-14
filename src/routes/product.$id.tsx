@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Star, ShoppingCart, MessageCircle, ArrowRight, Check } from "lucide-react";
+import { Star, ShoppingCart, MessageCircle, ArrowRight, Check, Sparkles } from "lucide-react";
 import { Shell } from "@/components/layout/Shell";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { getProductById, getProducts } from "@/lib/catalog.functions";
@@ -125,6 +125,17 @@ function ProductPage() {
               <a href={whatsappLink(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-outline">
                 <MessageCircle className="w-4 h-4 text-green-600" /> اطلب عبر واتساب
               </a>
+              <Link
+                to="/assistant"
+                search={{
+                  id: product.id,
+                  name: product.name,
+                  image: resolveImage(images[0]),
+                } as never}
+                className="inline-flex items-center gap-2 bg-gradient-to-l from-amber-500 to-yellow-500 text-white font-bold px-4 py-2 rounded-full hover:shadow-md transition"
+              >
+                <Sparkles className="w-4 h-4" /> تجربته على سيارتي بالذكاء الاصطناعي
+              </Link>
             </div>
           </div>
         </div>
