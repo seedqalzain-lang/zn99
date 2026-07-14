@@ -21,6 +21,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CentersRouteImport } from './routes/centers'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -99,6 +100,11 @@ const CentersRoute = CentersRouteImport.update({
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssistantRoute = AssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -204,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
+  '/assistant': typeof AssistantRoute
   '/cart': typeof CartRoute
   '/centers': typeof CentersRouteWithChildren
   '/checkout': typeof CheckoutRoute
@@ -237,6 +244,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
+  '/assistant': typeof AssistantRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
@@ -269,6 +277,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
+  '/assistant': typeof AssistantRoute
   '/cart': typeof CartRoute
   '/centers': typeof CentersRouteWithChildren
   '/checkout': typeof CheckoutRoute
@@ -304,6 +313,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/assistant'
     | '/cart'
     | '/centers'
     | '/checkout'
@@ -337,6 +347,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/assistant'
     | '/cart'
     | '/checkout'
     | '/contact'
@@ -368,6 +379,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/assistant'
     | '/cart'
     | '/centers'
     | '/checkout'
@@ -402,6 +414,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRoute
+  AssistantRoute: typeof AssistantRoute
   CartRoute: typeof CartRoute
   CentersRoute: typeof CentersRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
@@ -505,6 +518,13 @@ declare module '@tanstack/react-router' {
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assistant': {
+      id: '/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -698,6 +718,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRoute,
+  AssistantRoute: AssistantRoute,
   CartRoute: CartRoute,
   CentersRoute: CentersRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
