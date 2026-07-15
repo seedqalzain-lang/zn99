@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Shell } from "@/components/layout/Shell";
-import { Lock, LogOut, Plus, Pencil, Trash2, X, Upload, Loader2 } from "lucide-react";
+import { Lock, LogOut, Plus, Pencil, Trash2, X, Upload, Loader2, Sparkles } from "lucide-react";
 import {
   getProducts, getCategories, getServiceCategories, getPackages, getWallets, getSiteContent,
 } from "@/lib/catalog.functions";
