@@ -33,11 +33,37 @@ const SYSTEM_PROMPT = `أنت المساعد الذكي الرسمي لمتجر 
 - أ/ هاشم الزين — 778055135
 - أ/ علي غازي — 773345966`;
 
+async function buildKnowledgeBlock(): Promise<string> {
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: rows } = await supabaseAdmin
+      .from("ai_knowledge_base")
+      .select("title, content")
+      .eq("is_active", true)
+      .order("updated_at", { ascending: false })
+      .limit(100);
+    if (!rows || rows.length === 0) return "";
+    const items = rows
+      .map((r) => {
+        const t = r.title?.trim();
+        return t ? `### ${t}\n${r.content}` : r.content;
+      })
+      .join("\n\n---\n\n");
+    return `\n\n## قاعدة معرفة المتجر (المصدر الرسمي — اعتمد عليها ولا تخترع بيانات خارجها):\n\n${items}`;
+  } catch {
+    return "";
+  }
+}
+
 export const chatWithAssistant = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => Input.parse(d))
   .handler(async ({ data }) => {
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
+
+    const knowledge = await buildKnowledgeBlock();
+    const systemPrompt = SYSTEM_PROMPT + knowledge +
+      "\n\nقواعد صارمة:\n- اعتمد على قاعدة المعرفة أعلاه كمصدر رسمي.\n- لا تخترع أسعارًا أو عروضًا أو معلومات غير موجودة.\n- إذا لم تجد الإجابة، اطلب من العميل التواصل مع المتجر عبر الأرقام أعلاه.";
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -48,7 +74,7 @@ export const chatWithAssistant = createServerFn({ method: "POST" })
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: systemPrompt },
           ...data.messages,
         ],
       }),
