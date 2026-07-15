@@ -36,6 +36,7 @@ import { Route as WarrantyActivateRouteImport } from './routes/warranty.activate
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as CentersIdRouteImport } from './routes/centers.$id'
+import { Route as AdminAiTrainingRouteImport } from './routes/admin.ai-training'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as WarrantyCertificateIdRouteImport } from './routes/warranty.certificate.$id'
@@ -177,6 +178,11 @@ const CentersIdRoute = CentersIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => CentersRoute,
 } as any)
+const AdminAiTrainingRoute = AdminAiTrainingRouteImport.update({
+  id: '/ai-training',
+  path: '/ai-training',
+  getParentRoute: () => AdminRoute,
+} as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
     id: '/.well-known/oauth-protected-resource',
@@ -209,7 +215,7 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/assistant': typeof AssistantRoute
   '/cart': typeof CartRoute
   '/centers': typeof CentersRouteWithChildren
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/warranty': typeof WarrantyRouteWithChildren
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/admin/ai-training': typeof AdminAiTrainingRoute
   '/centers/$id': typeof CentersIdRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -243,7 +250,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/assistant': typeof AssistantRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
@@ -257,6 +264,7 @@ export interface FileRoutesByTo {
   '/vip': typeof VipRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/admin/ai-training': typeof AdminAiTrainingRoute
   '/centers/$id': typeof CentersIdRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -276,7 +284,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/assistant': typeof AssistantRoute
   '/cart': typeof CartRoute
   '/centers': typeof CentersRouteWithChildren
@@ -292,6 +300,7 @@ export interface FileRoutesById {
   '/warranty': typeof WarrantyRouteWithChildren
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/admin/ai-training': typeof AdminAiTrainingRoute
   '/centers/$id': typeof CentersIdRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -328,6 +337,7 @@ export interface FileRouteTypes {
     | '/warranty'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/admin/ai-training'
     | '/centers/$id'
     | '/product/$id'
     | '/services/$slug'
@@ -360,6 +370,7 @@ export interface FileRouteTypes {
     | '/vip'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/admin/ai-training'
     | '/centers/$id'
     | '/product/$id'
     | '/services/$slug'
@@ -394,6 +405,7 @@ export interface FileRouteTypes {
     | '/warranty'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/admin/ai-training'
     | '/centers/$id'
     | '/product/$id'
     | '/services/$slug'
@@ -413,7 +425,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AssistantRoute: typeof AssistantRoute
   CartRoute: typeof CartRoute
   CentersRoute: typeof CentersRouteWithChildren
@@ -625,6 +637,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CentersIdRouteImport
       parentRoute: typeof CentersRoute
     }
+    '/admin/ai-training': {
+      id: '/admin/ai-training'
+      path: '/ai-training'
+      fullPath: '/admin/ai-training'
+      preLoaderRoute: typeof AdminAiTrainingRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/.well-known/oauth-protected-resource': {
       id: '/.well-known/oauth-protected-resource'
       path: '/.well-known/oauth-protected-resource'
@@ -662,6 +681,16 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminRouteChildren {
+  AdminAiTrainingRoute: typeof AdminAiTrainingRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAiTrainingRoute: AdminAiTrainingRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface CentersRouteChildren {
   CentersIdRoute: typeof CentersIdRoute
@@ -717,7 +746,7 @@ const WarrantyRouteWithChildren = WarrantyRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AssistantRoute: AssistantRoute,
   CartRoute: CartRoute,
   CentersRoute: CentersRouteWithChildren,
