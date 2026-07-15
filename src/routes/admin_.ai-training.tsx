@@ -10,7 +10,7 @@ import {
 
 const TOKEN_KEY = "mycar_admin_token";
 
-export const Route = createFileRoute("/admin/ai-training")({
+export const Route = createFileRoute("/admin_/ai-training")({
   head: () => ({
     meta: [
       { title: "تدريب المساعد الذكي — زين" },
