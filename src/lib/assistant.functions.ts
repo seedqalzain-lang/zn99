@@ -105,9 +105,9 @@ export const chatWithAssistant = createServerFn({ method: "POST" })
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
 
-    const knowledge = await buildKnowledgeBlock();
-    const systemPrompt = SYSTEM_PROMPT + knowledge +
-      "\n\nقواعد صارمة:\n- اعتمد على قاعدة المعرفة أعلاه كمصدر رسمي.\n- لا تخترع أسعارًا أو عروضًا أو معلومات غير موجودة.\n- إذا لم تجد الإجابة، اطلب من العميل التواصل مع المتجر عبر الأرقام أعلاه.";
+    const [knowledge, catalog] = await Promise.all([buildKnowledgeBlock(), buildCatalogBlock()]);
+    const systemPrompt = SYSTEM_PROMPT + knowledge + catalog +
+      "\n\nقواعد صارمة:\n- اعتمد على قاعدة المعرفة والكتالوج أعلاه كمصدر رسمي.\n- لا تخترع أسعارًا أو منتجات أو عروضًا غير موجودة في الكتالوج.\n- عند اقتراح منتج، اذكر اسمه وسعره فقط كما ورد في الكتالوج.\n- إذا لم تجد الإجابة، اطلب من العميل التواصل مع المتجر عبر الأرقام أعلاه.";
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
