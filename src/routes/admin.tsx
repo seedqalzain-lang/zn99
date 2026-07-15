@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Shell } from "@/components/layout/Shell";
-import { Lock, LogOut, Plus, Pencil, Trash2, X, Upload, Loader2 } from "lucide-react";
+import { Lock, LogOut, Plus, Pencil, Trash2, X, Upload, Loader2, Sparkles } from "lucide-react";
 import {
   getProducts, getCategories, getServiceCategories, getPackages, getWallets, getSiteContent,
 } from "@/lib/catalog.functions";
@@ -154,7 +154,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
             <h1 className="text-2xl md:text-3xl font-black">لوحة التحكم</h1>
             <p className="text-sm text-[var(--color-ink-soft)]">إدارة المتجر والضمانات</p>
           </div>
-          <button onClick={onLogout} className="btn-outline"><LogOut className="w-4 h-4" /> خروج</button>
+          <div className="flex items-center gap-2">
+            <a href="/admin/ai-training" className="btn-outline"><Sparkles className="w-4 h-4" /> تدريب المساعد</a>
+            <button onClick={onLogout} className="btn-outline"><LogOut className="w-4 h-4" /> خروج</button>
+          </div>
         </div>
 
         {groups.map((g) => (

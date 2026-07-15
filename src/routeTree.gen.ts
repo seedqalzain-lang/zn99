@@ -36,6 +36,7 @@ import { Route as WarrantyActivateRouteImport } from './routes/warranty.activate
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as CentersIdRouteImport } from './routes/centers.$id'
+import { Route as AdminAiTrainingRouteImport } from './routes/admin_.ai-training'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as WarrantyCertificateIdRouteImport } from './routes/warranty.certificate.$id'
@@ -177,6 +178,11 @@ const CentersIdRoute = CentersIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => CentersRoute,
 } as any)
+const AdminAiTrainingRoute = AdminAiTrainingRouteImport.update({
+  id: '/admin_/ai-training',
+  path: '/admin/ai-training',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
     id: '/.well-known/oauth-protected-resource',
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/warranty': typeof WarrantyRouteWithChildren
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/admin/ai-training': typeof AdminAiTrainingRoute
   '/centers/$id': typeof CentersIdRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -257,6 +264,7 @@ export interface FileRoutesByTo {
   '/vip': typeof VipRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/admin/ai-training': typeof AdminAiTrainingRoute
   '/centers/$id': typeof CentersIdRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -292,6 +300,7 @@ export interface FileRoutesById {
   '/warranty': typeof WarrantyRouteWithChildren
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/admin_/ai-training': typeof AdminAiTrainingRoute
   '/centers/$id': typeof CentersIdRoute
   '/product/$id': typeof ProductIdRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -328,6 +337,7 @@ export interface FileRouteTypes {
     | '/warranty'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/admin/ai-training'
     | '/centers/$id'
     | '/product/$id'
     | '/services/$slug'
@@ -360,6 +370,7 @@ export interface FileRouteTypes {
     | '/vip'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/admin/ai-training'
     | '/centers/$id'
     | '/product/$id'
     | '/services/$slug'
@@ -394,6 +405,7 @@ export interface FileRouteTypes {
     | '/warranty'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/admin_/ai-training'
     | '/centers/$id'
     | '/product/$id'
     | '/services/$slug'
@@ -429,6 +441,7 @@ export interface RootRouteChildren {
   WarrantyRoute: typeof WarrantyRouteWithChildren
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  AdminAiTrainingRoute: typeof AdminAiTrainingRoute
   ProductIdRoute: typeof ProductIdRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -625,6 +638,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CentersIdRouteImport
       parentRoute: typeof CentersRoute
     }
+    '/admin_/ai-training': {
+      id: '/admin_/ai-training'
+      path: '/admin/ai-training'
+      fullPath: '/admin/ai-training'
+      preLoaderRoute: typeof AdminAiTrainingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.well-known/oauth-protected-resource': {
       id: '/.well-known/oauth-protected-resource'
       path: '/.well-known/oauth-protected-resource'
@@ -734,6 +754,7 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  AdminAiTrainingRoute: AdminAiTrainingRoute,
   ProductIdRoute: ProductIdRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
